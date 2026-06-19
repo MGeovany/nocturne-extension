@@ -2,9 +2,12 @@
    the panel stylesheet (whose :root vars are rewritten to :host). */
 :host {
   position: fixed;
-  inset: 0;
+  right: 16px;
+  bottom: 16px;
   z-index: 2147483647;
-  pointer-events: none;
+  width: 46px;
+  height: 46px;
+  pointer-events: auto;
 }
 
 .overlay-fab {
@@ -12,7 +15,6 @@
   right: 16px;
   bottom: 16px;
   z-index: 2147483647;
-  pointer-events: auto;
   width: 46px;
   height: 46px;
   border-radius: 50%;
@@ -32,7 +34,6 @@
   right: 16px;
   bottom: 74px;
   z-index: 2147483647;
-  pointer-events: auto;
   width: min(960px, 92vw);
   height: min(620px, 80vh);
   border-radius: 12px;

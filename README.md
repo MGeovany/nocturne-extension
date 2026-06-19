@@ -75,7 +75,8 @@ npm run package:firefox   # writes 404-am-firefox-v<version>.zip
 1. Edit the Gecko `id` in `manifest.firefox.json` (e.g. `404-am@yourdomain`).
 2. Run `npm run package:firefox`.
 3. Submit the zip at <https://addons.mozilla.org/developers/addon/submit/>.
-4. **Source code:** because the upload is bundled/minified, AMO review requires
+4. **Listing:** [404-AM on Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/d99a19ad970049ecb787/) (developer id `d99a19ad970049ecb787`).
+5. **Source code:** because the upload is bundled/minified, AMO review requires
    the source. Run `npm run package:source` to produce
    `404-am-source-v<version>.zip`, and see [`BUILD.md`](./BUILD.md) for the
    reproducible build instructions reviewers need (OS/env, Node/npm versions,
