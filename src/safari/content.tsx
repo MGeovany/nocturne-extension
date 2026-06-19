@@ -66,7 +66,7 @@ function mount() {
   button.title = '404-AM'
   button.setAttribute('aria-label', 'Open 404-AM')
   const buttonIcon = document.createElement('img')
-  buttonIcon.src = chrome.runtime.getURL('icons/icon32.png')
+  buttonIcon.src = chrome.runtime.getURL('icons/icon64.png')
   buttonIcon.alt = ''
   buttonIcon.width = 32
   buttonIcon.height = 32
@@ -188,8 +188,15 @@ function mount() {
     panelEl.style.top = `${panelY}px`
     panelEl.style.width = `${panel.width}px`
     panelEl.style.height = `${panel.height}px`
-    const modeX = edge === 'left' ? buttonX + FAB_SIZE + 8 : buttonX - MODE_SIZE - 8
-    const modeY = edge === 'top' ? buttonY + FAB_SIZE + 8 : buttonY + 6
+    let modeX = buttonX
+    let modeY = buttonY
+    if (edge === 'left' || edge === 'right') {
+      modeX = buttonX + 6
+      modeY = buttonY >= MODE_SIZE + 12 ? buttonY - MODE_SIZE - 8 : buttonY + FAB_SIZE + 8
+    } else {
+      modeX = buttonX >= MODE_SIZE + 12 ? buttonX - MODE_SIZE - 8 : buttonX + FAB_SIZE + 8
+      modeY = buttonY + 6
+    }
     modeButton.style.left = `${clamp(modeX, 0, width - MODE_SIZE)}px`
     modeButton.style.top = `${clamp(modeY, 0, height - MODE_SIZE)}px`
   }
