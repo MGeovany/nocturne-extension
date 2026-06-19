@@ -58,8 +58,10 @@ npm run package:firefox   # writes 404-am-firefox-v<version>.zip
 2. Run `npm run package:firefox`.
 3. Submit the zip at <https://addons.mozilla.org/developers/addon/submit/>.
 4. **Source code:** because the upload is bundled/minified, AMO review requires
-   the source. Point them to this repo and the build steps above
-   (`npm install` → `npm run build`, Node 20, output in `dist/`).
+   the source. Run `npm run package:source` to produce
+   `404-am-source-v<version>.zip`, and see [`BUILD.md`](./BUILD.md) for the
+   reproducible build instructions reviewers need (OS/env, Node/npm versions,
+   steps).
 
 > The Firefox packager overwrites `dist/manifest.json`. Run `npm run build`
 > (or `npm run package`) again before loading the Chrome build.

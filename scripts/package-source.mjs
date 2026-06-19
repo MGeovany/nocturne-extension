@@ -10,10 +10,12 @@ const out = `404-am-source-v${pkg.version}.zip`
 
 if (existsSync(resolve(root, out))) rmSync(resolve(root, out))
 
+// Keep dotfiles the reviewer needs (.nvmrc, .gitignore, .github); only drop
+// build output, deps, archives, VCS internals and OS cruft.
 execSync(
   `zip -r -X "${out}" . ` +
     `-x "node_modules/*" -x "dist/*" -x "*.zip" -x ".git/*" ` +
-    `-x "**/.DS_Store" -x ".*"`,
+    `-x "**/.DS_Store" -x ".DS_Store"`,
   { stdio: 'inherit', shell: '/bin/bash' },
 )
 
