@@ -7,8 +7,11 @@ import panelCss from '../styles.css?inline'
 import overlayCss from './overlay.css?inline'
 
 const FAB_SIZE = 46
-const PANEL_GAP = 58
+const PANEL_GAP = 12
 const VIEWPORT_PAD = 8
+const MODE_SIZE = 34
+
+type Edge = 'left' | 'right' | 'top' | 'bottom'
 
 // 1. Inject the MAIN-world capture script from the extension's resources.
 const s = document.createElement('script')
@@ -34,14 +37,15 @@ window.addEventListener('message', (e) => {
 function mount() {
   if (document.getElementById('__404am_host')) return
 
-  let side: 'left' | 'right' = 'right'
-  let anchorY = window.innerHeight - FAB_SIZE - 16
+  let edge: Edge = 'right'
+  let fabX = window.innerWidth - FAB_SIZE - 16
+  let fabY = window.innerHeight - FAB_SIZE - 16
 
   const host = document.createElement('div')
   host.id = '__404am_host'
   host.style.position = 'fixed'
-  host.style.left = `${window.innerWidth - FAB_SIZE - 16}px`
-  host.style.top = `${anchorY}px`
+  host.style.left = `${fabX}px`
+  host.style.top = `${fabY}px`
   host.style.right = 'auto'
   host.style.bottom = 'auto'
   host.style.width = '46px'
@@ -88,7 +92,8 @@ function mount() {
   let moved = false
   let dragStartX = 0
   let dragStartY = 0
-  let anchorStartY = 0
+  let fabStartX = 0
+  let fabStartY = 0
 
   const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 
@@ -97,27 +102,92 @@ function mount() {
     height: Math.min(expanded ? 680 : 440, Math.max(FAB_SIZE, window.innerHeight - 96)),
   })
 
-  const hostSize = () => {
-    if (!open) return { width: FAB_SIZE, height: FAB_SIZE }
-    const panel = panelSize()
-    return { width: panel.width, height: panel.height + PANEL_GAP }
+  const clampFab = () => {
+    fabX = clamp(fabX, VIEWPORT_PAD, window.innerWidth - FAB_SIZE - VIEWPORT_PAD)
+    fabY = clamp(fabY, VIEWPORT_PAD, window.innerHeight - FAB_SIZE - VIEWPORT_PAD)
   }
 
-  const clampAnchor = () => {
-    anchorY = clamp(anchorY, VIEWPORT_PAD, window.innerHeight - FAB_SIZE - VIEWPORT_PAD)
+  const snapToNearestEdge = () => {
+    clampFab()
+    const centerX = fabX + FAB_SIZE / 2
+    const centerY = fabY + FAB_SIZE / 2
+    const distances: Record<Edge, number> = {
+      left: centerX,
+      right: window.innerWidth - centerX,
+      top: centerY,
+      bottom: window.innerHeight - centerY,
+    }
+    edge = (Object.keys(distances) as Edge[]).reduce((best, next) =>
+      distances[next] < distances[best] ? next : best,
+    )
+    if (edge === 'left') fabX = VIEWPORT_PAD
+    else if (edge === 'right') fabX = window.innerWidth - FAB_SIZE - VIEWPORT_PAD
+    else if (edge === 'top') fabY = VIEWPORT_PAD
+    else fabY = window.innerHeight - FAB_SIZE - VIEWPORT_PAD
+    clampFab()
   }
 
   const positionHost = () => {
-    clampAnchor()
-    const size = hostSize()
-    const left = side === 'left' ? VIEWPORT_PAD : window.innerWidth - size.width - VIEWPORT_PAD
-    const top = clamp(anchorY - (size.height - FAB_SIZE), VIEWPORT_PAD, window.innerHeight - size.height - VIEWPORT_PAD)
+    clampFab()
+    const panel = panelSize()
+    let width = FAB_SIZE
+    let height = FAB_SIZE
+    let left = fabX
+    let top = fabY
+    let buttonX = 0
+    let buttonY = 0
+    let panelX = 0
+    let panelY = 0
+
+    if (open) {
+      if (edge === 'left' || edge === 'right') {
+        width = panel.width + PANEL_GAP + FAB_SIZE
+        height = Math.max(panel.height, FAB_SIZE)
+        top = clamp(fabY + FAB_SIZE / 2 - height / 2, VIEWPORT_PAD, window.innerHeight - height - VIEWPORT_PAD)
+        if (edge === 'left') {
+          left = VIEWPORT_PAD
+          buttonX = 0
+          panelX = FAB_SIZE + PANEL_GAP
+        } else {
+          left = window.innerWidth - width - VIEWPORT_PAD
+          buttonX = width - FAB_SIZE
+          panelX = 0
+        }
+        buttonY = clamp(fabY - top, 0, height - FAB_SIZE)
+        panelY = clamp(buttonY + FAB_SIZE / 2 - panel.height / 2, 0, height - panel.height)
+      } else {
+        width = Math.max(panel.width, FAB_SIZE)
+        height = panel.height + PANEL_GAP + FAB_SIZE
+        left = clamp(fabX + FAB_SIZE / 2 - width / 2, VIEWPORT_PAD, window.innerWidth - width - VIEWPORT_PAD)
+        if (edge === 'top') {
+          top = VIEWPORT_PAD
+          buttonY = 0
+          panelY = FAB_SIZE + PANEL_GAP
+        } else {
+          top = window.innerHeight - height - VIEWPORT_PAD
+          buttonY = height - FAB_SIZE
+          panelY = 0
+        }
+        buttonX = clamp(fabX - left, 0, width - FAB_SIZE)
+        panelX = clamp(buttonX + FAB_SIZE / 2 - panel.width / 2, 0, width - panel.width)
+      }
+    }
+
     host.style.left = `${left}px`
     host.style.top = `${top}px`
-    host.style.width = `${size.width}px`
-    host.style.height = `${size.height}px`
-    host.classList.toggle('left', side === 'left')
-    host.classList.toggle('right', side === 'right')
+    host.style.width = `${width}px`
+    host.style.height = `${height}px`
+    host.className = `edge-${edge}`
+    button.style.left = `${buttonX}px`
+    button.style.top = `${buttonY}px`
+    panelEl.style.left = `${panelX}px`
+    panelEl.style.top = `${panelY}px`
+    panelEl.style.width = `${panel.width}px`
+    panelEl.style.height = `${panel.height}px`
+    const modeX = edge === 'left' ? buttonX + FAB_SIZE + 8 : buttonX - MODE_SIZE - 8
+    const modeY = edge === 'top' ? buttonY + FAB_SIZE + 8 : buttonY + 6
+    modeButton.style.left = `${clamp(modeX, 0, width - MODE_SIZE)}px`
+    modeButton.style.top = `${clamp(modeY, 0, height - MODE_SIZE)}px`
   }
 
   const syncOpen = () => {
@@ -139,9 +209,12 @@ function mount() {
     if (!dragging) return
     const dx = event.clientX - dragStartX
     const dy = event.clientY - dragStartY
-    if (Math.abs(dx) + Math.abs(dy) > 4) moved = true
-    side = event.clientX < window.innerWidth / 2 ? 'left' : 'right'
-    anchorY = anchorStartY + dy
+    if (Math.abs(dx) + Math.abs(dy) > 4) {
+      moved = true
+      if (open) open = false
+    }
+    fabX = fabStartX + dx
+    fabY = fabStartY + dy
     positionHost()
   }
 
@@ -159,7 +232,7 @@ function mount() {
     if (!moved) {
       toggleOpen()
     } else {
-      side = event.clientX < window.innerWidth / 2 ? 'left' : 'right'
+      snapToNearestEdge()
       positionHost()
     }
   }
@@ -171,7 +244,8 @@ function mount() {
     moved = false
     dragStartX = event.clientX
     dragStartY = event.clientY
-    anchorStartY = anchorY
+    fabStartX = fabX
+    fabStartY = fabY
     try {
       button.setPointerCapture(event.pointerId)
     } catch (_err) {

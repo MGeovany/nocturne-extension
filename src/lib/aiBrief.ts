@@ -13,6 +13,32 @@ function classify(status: number): string {
   return 'a successful response'
 }
 
+function isRequestError(status: number): boolean {
+  return status === 0 || status >= 400
+}
+
+function isRedirect(status: number): boolean {
+  return status >= 300 && status < 400
+}
+
+function responseHeader(req: CapturedRequest, name: string): string | undefined {
+  const lower = name.toLowerCase()
+  return req.responseHeaders.find((h) => h.name.toLowerCase() === lower)?.value
+}
+
+function requestSummaryLines(req: CapturedRequest): string[] {
+  const summary: string[] = []
+  summary.push(`- \`${req.method} ${req.url}\``)
+  summary.push(
+    `- Result: **${req.status || 'no status'} ${req.statusText}** — ${classify(req.status)}`,
+  )
+  summary.push(`- Duration: ${req.durationMs >= 0 ? `${req.durationMs} ms` : 'unknown'}`)
+  if (req.responseBodySize >= 0) {
+    summary.push(`- Response size: ${req.responseBodySize} bytes`)
+  }
+  return summary
+}
+
 function pathOf(url: string): string {
   try {
     return new URL(url).pathname
@@ -45,12 +71,14 @@ interface BriefOptions {
 }
 
 /**
- * Builds a self-contained, AI-friendly debugging brief for a request — telling
- * the assistant what failed, where to look in the codebase, and including the
- * full (secret-masked) request/response context plus recent console errors.
+ * Builds a self-contained, AI-friendly debug brief for a request — where to
+ * look in the codebase, secret-masked request/response context, and recent
+ * console errors. Failure details are included only for 4xx/5xx (or incomplete)
+ * responses.
  */
 export function toAiBrief(req: CapturedRequest, opts: BriefOptions): string {
   const path = pathOf(req.url)
+  const failed = isRequestError(req.status)
   const traces = getTraceIds(req.requestHeaders, req.responseHeaders)
   const reqJson = req.requestBody?.text
     ? tryFormatJson(req.requestBody.text, req.requestBody.mimeType)
@@ -64,19 +92,46 @@ export function toAiBrief(req: CapturedRequest, opts: BriefOptions): string {
     .slice(-15)
 
   const lines: string[] = []
-  lines.push('# Failed network request — debug brief')
-  lines.push('')
-  lines.push(
-    'A network request in my web app failed. Help me find the root cause in my codebase and propose a fix.',
-  )
-  lines.push('')
-  lines.push('## What failed')
-  lines.push(`- \`${req.method} ${req.url}\``)
-  lines.push(
-    `- Result: **${req.status || 'no status'} ${req.statusText}** — ${classify(req.status)}`,
-  )
-  lines.push(`- Duration: ${req.durationMs >= 0 ? `${req.durationMs} ms` : 'unknown'}`)
-  lines.push('')
+  if (failed) {
+    lines.push('# Failed network request — debug brief')
+    lines.push('')
+    lines.push(
+      'A network request in my web app failed. Help me find the root cause in my codebase and propose a fix.',
+    )
+    lines.push('')
+    lines.push('## What failed')
+    lines.push(`- \`${req.method} ${req.url}\``)
+    lines.push(
+      `- Result: **${req.status || 'no status'} ${req.statusText}** — ${classify(req.status)}`,
+    )
+    lines.push(`- Duration: ${req.durationMs >= 0 ? `${req.durationMs} ms` : 'unknown'}`)
+    lines.push('')
+  } else if (isRedirect(req.status)) {
+    lines.push('# Redirect — context brief')
+    lines.push('')
+    lines.push(
+      'This request returned a redirect. Help me trace where it points and how it is handled in my codebase.',
+    )
+    lines.push('')
+    lines.push('## Redirect')
+    const redirectSummary = requestSummaryLines(req)
+    const location = responseHeader(req, 'location')
+    if (location) {
+      redirectSummary.push(`- Location: \`${location}\``)
+    }
+    lines.push(...redirectSummary)
+    lines.push('')
+  } else {
+    lines.push('# Network request — context brief')
+    lines.push('')
+    lines.push(
+      'This request succeeded. Help me understand what it does and how it fits into my codebase.',
+    )
+    lines.push('')
+    lines.push('## Request summary')
+    lines.push(...requestSummaryLines(req))
+    lines.push('')
+  }
   lines.push('## Where to look')
   lines.push(`- Endpoint path: \`${path}\``)
   lines.push(
@@ -116,10 +171,5 @@ export function toAiBrief(req: CapturedRequest, opts: BriefOptions): string {
     lines.push(fence(relevantLogs.map((l) => `[${l.level}] ${l.text}`).join('\n')))
   }
 
-  lines.push('')
-  lines.push('## Ask')
-  lines.push(
-    '1. Explain the most likely cause of this failure. 2. Point me to the specific file/function to inspect first. 3. Suggest a concrete fix.',
-  )
   return lines.join('\n')
 }
