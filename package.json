@@ -8,7 +8,8 @@
     "watch": "vite build --watch",
     "typecheck": "tsc --noEmit",
     "package": "npm run build && node scripts/package.mjs",
-    "package:firefox": "npm run build && node scripts/package-firefox.mjs"
+    "package:firefox": "npm run build && node scripts/package-firefox.mjs",
+    "package:source": "node scripts/package-source.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
