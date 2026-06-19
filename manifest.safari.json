@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "description": "Inspect, filter and debug a page's fetch/XHR requests and console logs.",
   "permissions": ["storage"],
+  "host_permissions": ["http://*/*", "https://*/*"],
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
@@ -12,15 +13,21 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": ["http://*/*", "https://*/*"],
       "js": ["content.js"],
       "run_at": "document_start"
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["inject.js"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "inject.js",
+        "icons/icon16.png",
+        "icons/icon32.png",
+        "icons/icon48.png",
+        "icons/icon128.png"
+      ],
+      "matches": ["http://*/*", "https://*/*"]
     }
   ]
 }

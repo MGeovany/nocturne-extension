@@ -20,6 +20,9 @@ function copySafariAssets() {
 }
 
 export default defineConfig({
+  define: {
+    'process.env.NODE_ENV': JSON.stringify('production'),
+  },
   resolve: {
     alias: {
       // Swap the data source to the injected (content-script) implementation.

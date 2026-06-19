@@ -22,6 +22,12 @@ const SORT_LABEL: Record<SortMode, string> = {
   status: 'Status',
 }
 
+function extensionIconUrl() {
+  return typeof chrome !== 'undefined' && chrome.runtime?.getURL
+    ? chrome.runtime.getURL('icons/icon32.png')
+    : 'icons/icon32.png'
+}
+
 interface Props {
   filters: FilterState
   onChange: (next: FilterState) => void
@@ -52,6 +58,7 @@ export function Filters({
   onExportJson,
   exporting,
 }: Props) {
+  const iconUrl = extensionIconUrl()
   const toggle = (key: keyof FilterState) => {
     onChange({ ...filters, [key]: !filters[key] })
   }
@@ -60,7 +67,7 @@ export function Filters({
     <div className="sidebar-head">
       <div className="sidebar-title-row">
         <div className="brand">
-          <img className="brand-icon" src="icons/icon32.png" alt="" width={18} height={18} />
+          <img className="brand-icon" src={iconUrl} alt="" width={18} height={18} />
           <span className="brand-name">404-AM</span>
         </div>
         <div className="sidebar-actions">
