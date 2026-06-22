@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit",
     "package": "npm run build && node scripts/package.mjs",
     "package:edge": "npm run build && node scripts/package-edge.mjs",
+    "package:opera": "npm run build && node scripts/package-opera.mjs",
     "package:firefox": "npm run build && node scripts/package-firefox.mjs",
     "package:source": "node scripts/package-source.mjs",
     "build:safari": "tsc --noEmit && vite build -c vite.safari.config.ts",
