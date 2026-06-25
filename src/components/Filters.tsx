@@ -7,6 +7,7 @@ export interface FilterState {
   onlyErrors: boolean
   onlySlow: boolean
   slowThresholdMs: number
+  hideAssets: boolean
   groupByDomain: boolean
   contentType: string
   preserveLog: boolean
@@ -119,6 +120,14 @@ export function Filters({
         <label className={`chip ${filters.starredOnly ? 'active' : ''}`}>
           <input type="checkbox" checked={filters.starredOnly} onChange={() => toggle('starredOnly')} />
           ★ Starred
+        </label>
+
+        <label
+          className={`chip ${filters.hideAssets ? 'active' : ''}`}
+          title="Hide CSS, image, and JavaScript requests"
+        >
+          <input type="checkbox" checked={filters.hideAssets} onChange={() => toggle('hideAssets')} />
+          No assets
         </label>
 
         <label className={`threshold-wrap ${filters.onlySlow ? 'active' : ''}`}>

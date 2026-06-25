@@ -21,6 +21,7 @@ const DEFAULT_FILTERS: FilterState = {
   onlyErrors: false,
   onlySlow: false,
   slowThresholdMs: 1000,
+  hideAssets: false,
   groupByDomain: false,
   contentType: 'all',
   preserveLog: true,
@@ -74,8 +75,9 @@ export function Panel() {
       if (filters.onlyErrors && r.status < 400) return false
       if (filters.onlySlow && r.durationMs < filters.slowThresholdMs) return false
       if (filters.starredOnly && !favorites.has(r.id)) return false
-      if (filters.contentType !== 'all' && categoryOf(r.responseMimeType) !== filters.contentType)
-        return false
+      const contentCategory = categoryOf(r.responseMimeType)
+      if (filters.hideAssets && ['css', 'image', 'js'].includes(contentCategory)) return false
+      if (filters.contentType !== 'all' && contentCategory !== filters.contentType) return false
       if (search) {
         const urlMatch = r.url.toLowerCase().includes(search)
         const bodyMatch = filters.searchBodies && (bodies.get(r.id)?.includes(search) ?? false)
