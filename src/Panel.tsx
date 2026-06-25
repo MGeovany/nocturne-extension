@@ -5,6 +5,7 @@ import { useBodyIndex } from './hooks/useBodyIndex'
 import { useHiddenConsoleMessages } from './hooks/useHiddenConsoleMessages'
 import { RequestList } from './components/RequestList'
 import { RequestDetail } from './components/RequestDetail'
+import { SiteDataPanel } from './components/SiteDataPanel'
 import { ConsolePanel } from './components/ConsolePanel'
 import { Filters, type FilterState } from './components/Filters'
 import { downloadFile, toHar, toJson } from './lib/export'
@@ -42,6 +43,7 @@ export function Panel() {
   const [favorites, setFavorites] = useState<Set<number>>(new Set())
   const [sidebarWidth, setSidebarWidth] = useState(DEFAULT_SIDEBAR_WIDTH)
   const [consoleCollapsed, setConsoleCollapsed] = useState(false)
+  const [workspaceMode, setWorkspaceMode] = useState<'request' | 'site-data'>('request')
 
   const { requests, navigations, clear } = useRequestSource(filters.preserveLog)
   const { logs, clear: clearLogs } = useConsoleSource(filters.preserveLog)
@@ -233,11 +235,29 @@ export function Panel() {
         </aside>
         <div className="resizer" onMouseDown={startResize} title="Drag to resize" />
         <main className="workspace">
+          <div className="workspace-mode-bar">
+            <button
+              className={`workspace-mode ${workspaceMode === 'request' ? 'active' : ''}`}
+              onClick={() => setWorkspaceMode('request')}
+            >
+              Request
+            </button>
+            <button
+              className={`workspace-mode ${workspaceMode === 'site-data' ? 'active' : ''}`}
+              onClick={() => setWorkspaceMode('site-data')}
+            >
+              Site data
+            </button>
+          </div>
+          {workspaceMode === 'site-data' ? (
+            <SiteDataPanel />
+          ) : (
             <RequestDetail
               req={selected}
               initialBodyQuery={bodySearchActive ? filters.search : ''}
               consoleLogs={visibleLogs}
             />
+          )}
         </main>
       </div>
       <ConsolePanel

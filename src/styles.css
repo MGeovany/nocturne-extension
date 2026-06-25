@@ -299,6 +299,17 @@ button.primary:hover:not(:disabled) {
   border-color: var(--accent-hover);
 }
 
+button.danger {
+  background: rgba(239, 83, 80, 0.12);
+  border-color: rgba(239, 83, 80, 0.28);
+  color: #ff9b98;
+}
+
+button.danger:hover:not(:disabled) {
+  background: rgba(239, 83, 80, 0.2);
+  border-color: rgba(239, 83, 80, 0.4);
+}
+
 button.ghost {
   background: transparent;
   border-color: transparent;
@@ -567,6 +578,36 @@ button:disabled {
   background: var(--workspace);
 }
 
+.workspace-mode-bar {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  background: var(--sidebar);
+  border-bottom: 1px solid var(--border);
+}
+
+.workspace-mode {
+  background: transparent;
+  color: var(--fg-muted);
+  border-color: transparent;
+  padding: 5px 10px;
+}
+
+.workspace-mode:hover:not(:disabled),
+.workspace-mode.active {
+  background: var(--accent-soft);
+  color: #b8b5ff;
+  border-color: transparent;
+}
+
+.workspace .detail-header {
+  top: 42px;
+}
+
 .detail {
   display: flex;
   flex-direction: column;
@@ -733,6 +774,82 @@ button:disabled {
   letter-spacing: 0.05em;
   color: var(--fg-subtle);
   margin: 0 0 10px;
+}
+
+/* ---- Site data ---- */
+.site-data-panel .detail-body {
+  padding: 16px;
+}
+
+.site-data-empty {
+  min-height: 340px;
+}
+
+.site-data-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.site-data-section {
+  min-width: 0;
+}
+
+.site-data-error {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  color: #ffb3b0;
+  background: rgba(239, 83, 80, 0.12);
+  border: 1px solid rgba(239, 83, 80, 0.25);
+  border-radius: var(--radius);
+}
+
+.site-data-table-wrap {
+  overflow-x: auto;
+}
+
+.site-data-table .hvalue {
+  max-width: 420px;
+}
+
+.site-data-meta {
+  color: var(--fg-subtle);
+  font-family: var(--mono);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.site-data-action {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.site-data-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.site-data-list-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px 12px;
+  background: var(--sidebar);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.site-data-name {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .overview {
