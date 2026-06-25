@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import type { CapturedRequest } from '../types'
 import type { NavMarker } from '../hooks/useNetworkRequests'
 import { RequestRow } from './RequestRow'
@@ -7,6 +7,7 @@ interface Props {
   requests: CapturedRequest[]
   navigations: NavMarker[]
   selectedId: number | null
+  latestRequestId: number | null
   onSelect: (id: number) => void
   groupByDomain: boolean
   slowThresholdMs: number
@@ -49,6 +50,7 @@ export function RequestList({
   requests,
   navigations,
   selectedId,
+  latestRequestId,
   onSelect,
   groupByDomain,
   slowThresholdMs,
@@ -56,6 +58,17 @@ export function RequestList({
   onToggleFavorite,
 }: Props) {
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set())
+  const listRef = useRef<HTMLDivElement>(null)
+  const previousLatestRequestIdRef = useRef(latestRequestId)
+
+  useEffect(() => {
+    if (latestRequestId !== null && latestRequestId !== previousLatestRequestIdRef.current) {
+      listRef.current
+        ?.querySelector<HTMLElement>(`[data-request-id="${latestRequestId}"]`)
+        ?.scrollIntoView({ block: 'end' })
+    }
+    previousLatestRequestIdRef.current = latestRequestId
+  }, [latestRequestId])
 
   if (requests.length === 0) {
     return (
@@ -110,7 +123,7 @@ export function RequestList({
       items.push(<NavMarkerRow key={`nav-${mi}`} url={navs[mi].url} />)
       mi++
     }
-    return <div className="request-list">{items}</div>
+    return <div ref={listRef} className="request-list">{items}</div>
   }
 
   const groups = new Map<string, CapturedRequest[]>()
@@ -130,7 +143,7 @@ export function RequestList({
   }
 
   return (
-    <div className="request-list">
+    <div ref={listRef} className="request-list">
       {[...groups.entries()].map(([host, list]) => {
         const isCollapsed = collapsed.has(host)
         return (

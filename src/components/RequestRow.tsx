@@ -69,6 +69,7 @@ export function RequestRow({
   return (
     <div
       ref={ref}
+      data-request-id={req.id}
       className={`request-row ${selected ? 'selected' : ''}`}
       onClick={() => onSelect(req.id)}
       title={req.url}

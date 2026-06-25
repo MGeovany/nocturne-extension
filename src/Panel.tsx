@@ -62,6 +62,7 @@ export function Panel() {
     () => requests.filter((r) => API_TYPES.includes(r.resourceType)),
     [requests],
   )
+  const latestRequestId = apiRequests.length > 0 ? apiRequests[apiRequests.length - 1].id : null
 
   // Fetch bodies lazily only while body-search is active and there's a query.
   const bodySearchActive = filters.searchBodies && filters.search.trim().length > 0
@@ -209,6 +210,7 @@ export function Panel() {
               requests={sorted}
               navigations={showMarkers ? navigations : []}
               selectedId={selectedId}
+              latestRequestId={latestRequestId}
               onSelect={setSelectedId}
               groupByDomain={filters.groupByDomain}
               slowThresholdMs={filters.slowThresholdMs}
