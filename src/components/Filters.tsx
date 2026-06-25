@@ -1,4 +1,5 @@
 import { CATEGORY_LABEL, CONTENT_CATEGORIES } from '../lib/contentType'
+import { ignoreExtensionContextInvalidated } from '../lib/chrome'
 
 export type SortMode = 'recent' | 'duration' | 'size' | 'status'
 
@@ -24,9 +25,14 @@ const SORT_LABEL: Record<SortMode, string> = {
 }
 
 function extensionIconUrl() {
-  return typeof chrome !== 'undefined' && chrome.runtime?.getURL
-    ? chrome.runtime.getURL('icons/icon32.png')
-    : 'icons/icon32.png'
+  try {
+    return typeof chrome !== 'undefined' && chrome.runtime?.getURL
+      ? chrome.runtime.getURL('icons/icon32.png')
+      : 'icons/icon32.png'
+  } catch (error) {
+    ignoreExtensionContextInvalidated(error)
+    return 'icons/icon32.png'
+  }
 }
 
 interface Props {

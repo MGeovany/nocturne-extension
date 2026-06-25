@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { CapturedRequest, HarHeader } from '../types'
+import { isExtensionContextInvalidated } from '../lib/chrome'
 
 function toHeaders(list: ReadonlyArray<{ name: string; value: string }>): HarHeader[] {
   return list.map((h) => ({ name: h.name, value: h.value }))
@@ -29,7 +30,14 @@ export function useNetworkRequests(preserveLog: boolean) {
   }, [preserveLog])
 
   useEffect(() => {
+    let contextInvalidated = false
+    const stopIfContextInvalidated = (error: unknown) => {
+      if (!isExtensionContextInvalidated(error)) throw error
+      contextInvalidated = true
+    }
+
     const onFinished = (entry: chrome.devtools.network.Request) => {
+      if (contextInvalidated) return
       const resourceType =
         (entry as unknown as { _resourceType?: string })._resourceType ?? 'other'
 
@@ -64,6 +72,7 @@ export function useNetworkRequests(preserveLog: boolean) {
     }
 
     const onNavigated = (url: string) => {
+      if (contextInvalidated) return
       if (preserveRef.current) {
         setNavigations((prev) => [...prev, { boundaryId: idRef.current, url }])
       } else {
@@ -72,11 +81,21 @@ export function useNetworkRequests(preserveLog: boolean) {
       }
     }
 
-    chrome.devtools.network.onRequestFinished.addListener(onFinished)
-    chrome.devtools.network.onNavigated.addListener(onNavigated)
+    try {
+      chrome.devtools.network.onRequestFinished.addListener(onFinished)
+      chrome.devtools.network.onNavigated.addListener(onNavigated)
+    } catch (error) {
+      stopIfContextInvalidated(error)
+    }
+
     return () => {
-      chrome.devtools.network.onRequestFinished.removeListener(onFinished)
-      chrome.devtools.network.onNavigated.removeListener(onNavigated)
+      contextInvalidated = true
+      try {
+        chrome.devtools.network.onRequestFinished.removeListener(onFinished)
+        chrome.devtools.network.onNavigated.removeListener(onNavigated)
+      } catch (error) {
+        if (!isExtensionContextInvalidated(error)) throw error
+      }
     }
   }, [])
 

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FilterState } from '../components/Filters'
+import { ignoreExtensionContextInvalidated } from '../lib/chrome'
 
 const STORAGE_KEY = 'fourohfour_filters_v1'
 
@@ -14,22 +15,31 @@ export function usePersistentFilters(defaults: FilterState) {
 
   // Load once on mount.
   useEffect(() => {
-    if (!chrome.storage?.local) {
+    if (typeof chrome === 'undefined' || !chrome.storage?.local) {
       loaded.current = true
       return
     }
-    chrome.storage.local.get(STORAGE_KEY, (res) => {
-      const saved = res?.[STORAGE_KEY] as Partial<FilterState> | undefined
-      if (saved) setFilters((prev) => ({ ...prev, ...saved, search: '' }))
+    try {
+      chrome.storage.local.get(STORAGE_KEY, (res) => {
+        const saved = res?.[STORAGE_KEY] as Partial<FilterState> | undefined
+        if (saved) setFilters((prev) => ({ ...prev, ...saved, search: '' }))
+        loaded.current = true
+      })
+    } catch (error) {
       loaded.current = true
-    })
+      ignoreExtensionContextInvalidated(error)
+    }
   }, [])
 
   // Persist on change (after the initial load, so defaults don't clobber).
   useEffect(() => {
     if (!loaded.current) return
     const { search: _ignored, ...persistable } = filters
-    chrome.storage?.local?.set({ [STORAGE_KEY]: persistable })
+    try {
+      if (typeof chrome !== 'undefined') chrome.storage?.local?.set({ [STORAGE_KEY]: persistable })
+    } catch (error) {
+      ignoreExtensionContextInvalidated(error)
+    }
   }, [filters])
 
   return [filters, setFilters] as const

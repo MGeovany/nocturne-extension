@@ -9,6 +9,7 @@ import { ConsolePanel } from './components/ConsolePanel'
 import { Filters, type FilterState } from './components/Filters'
 import { downloadFile, toHar, toJson } from './lib/export'
 import { categoryOf } from './lib/contentType'
+import { ignoreExtensionContextInvalidated } from './lib/chrome'
 
 const API_TYPES = ['xhr', 'fetch']
 const LAYOUT_KEY = 'fourohfour_layout_v1'
@@ -53,10 +54,15 @@ export function Panel() {
 
   // Load persisted sidebar width.
   useEffect(() => {
-    chrome.storage?.local?.get(LAYOUT_KEY, (res) => {
-      const w = res?.[LAYOUT_KEY]?.sidebarWidth
-      if (typeof w === 'number') setSidebarWidth(Math.min(MAX_SIDEBAR, Math.max(MIN_SIDEBAR, w)))
-    })
+    try {
+      if (typeof chrome === 'undefined') return
+      chrome.storage?.local?.get(LAYOUT_KEY, (res) => {
+        const w = res?.[LAYOUT_KEY]?.sidebarWidth
+        if (typeof w === 'number') setSidebarWidth(Math.min(MAX_SIDEBAR, Math.max(MIN_SIDEBAR, w)))
+      })
+    } catch (error) {
+      ignoreExtensionContextInvalidated(error)
+    }
   }, [])
 
   const apiRequests = useMemo(
@@ -165,7 +171,11 @@ export function Panel() {
       document.body.style.cursor = ''
       document.removeEventListener('mousemove', onMove)
       document.removeEventListener('mouseup', onUp)
-      chrome.storage?.local?.set({ [LAYOUT_KEY]: { sidebarWidth: w } })
+      try {
+        if (typeof chrome !== 'undefined') chrome.storage?.local?.set({ [LAYOUT_KEY]: { sidebarWidth: w } })
+      } catch (error) {
+        ignoreExtensionContextInvalidated(error)
+      }
     }
     document.addEventListener('mousemove', onMove)
     document.addEventListener('mouseup', onUp)

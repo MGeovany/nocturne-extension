@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { isExtensionContextInvalidated } from '../lib/chrome'
 
 export interface ConsoleEntry {
   id: number
@@ -74,27 +75,42 @@ export function useConsoleLogs(preserveLog: boolean) {
 
   useEffect(() => {
     let stopped = false
-    const install = () => chrome.devtools.inspectedWindow.eval(INSTALL_EXPR, () => {})
+    const stopIfContextInvalidated = (error: unknown) => {
+      if (!isExtensionContextInvalidated(error)) throw error
+      stopped = true
+    }
+    const install = () => {
+      try {
+        chrome.devtools.inspectedWindow.eval(INSTALL_EXPR, () => {})
+      } catch (error) {
+        stopIfContextInvalidated(error)
+      }
+    }
 
     install()
 
     const poll = () => {
-      chrome.devtools.inspectedWindow.eval(POLL_EXPR, (result, err) => {
-        if (stopped || err) return
-        const batch = result as RawEntry[] | undefined
-        if (!Array.isArray(batch) || batch.length === 0) return
-        setLogs((prev) => {
-          const next = prev.concat(
-            batch.map((r) => ({
-              id: idRef.current++,
-              level: r.level,
-              text: r.text,
-              time: r.time,
-            })),
-          )
-          return next.length > 5000 ? next.slice(next.length - 5000) : next
+      if (stopped) return
+      try {
+        chrome.devtools.inspectedWindow.eval(POLL_EXPR, (result, err) => {
+          if (stopped || err) return
+          const batch = result as RawEntry[] | undefined
+          if (!Array.isArray(batch) || batch.length === 0) return
+          setLogs((prev) => {
+            const next = prev.concat(
+              batch.map((r) => ({
+                id: idRef.current++,
+                level: r.level,
+                text: r.text,
+                time: r.time,
+              })),
+            )
+            return next.length > 5000 ? next.slice(next.length - 5000) : next
+          })
         })
-      })
+      } catch (error) {
+        stopIfContextInvalidated(error)
+      }
     }
 
     const interval = setInterval(poll, 600)
@@ -103,12 +119,20 @@ export function useConsoleLogs(preserveLog: boolean) {
       install() // page reloaded — reinstall the override
       if (!preserveRef.current) setLogs([])
     }
-    chrome.devtools.network.onNavigated.addListener(onNavigated)
+    try {
+      chrome.devtools.network.onNavigated.addListener(onNavigated)
+    } catch (error) {
+      stopIfContextInvalidated(error)
+    }
 
     return () => {
       stopped = true
       clearInterval(interval)
-      chrome.devtools.network.onNavigated.removeListener(onNavigated)
+      try {
+        chrome.devtools.network.onNavigated.removeListener(onNavigated)
+      } catch (error) {
+        if (!isExtensionContextInvalidated(error)) throw error
+      }
     }
   }, [])
 
