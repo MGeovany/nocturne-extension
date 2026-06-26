@@ -6,6 +6,7 @@
   window.__404am_injected__ = true
 
   var SRC = '404am'
+  var reqSeq = 0
   function post(kind, payload) {
     try {
       window.postMessage({ __source: SRC, kind: kind, payload: payload }, '*')
@@ -37,11 +38,31 @@
   if (origFetch) {
     window.fetch = function (input, init) {
       var start = Date.now()
+      var requestKey = 'fetch-' + (++reqSeq)
       var method = (init && init.method) || (input && input.method) || 'GET'
       var url = typeof input === 'string' ? input : (input && input.url) || String(input)
       var reqHeaders = reqHeadersFrom(init, input)
       var reqBody
       try { if (init && typeof init.body === 'string') reqBody = init.body } catch (e) {}
+
+      post('request', {
+        requestKey: requestKey,
+        lifecycleStatus: 'pending',
+        method: String(method).toUpperCase(),
+        url: url,
+        status: 0,
+        statusText: 'Pending',
+        resourceType: 'fetch',
+        durationMs: -1,
+        startedDateTime: new Date(start).toISOString(),
+        requestHeaders: reqHeaders,
+        responseHeaders: [],
+        requestBody: reqBody != null ? { mimeType: '', text: reqBody } : undefined,
+        responseMimeType: '',
+        responseBodySize: 0,
+        responseBody: '',
+        responseEncoding: '',
+      })
 
       return origFetch.apply(this, arguments).then(
         function (res) {
@@ -50,6 +71,8 @@
           try { clone = res.clone() } catch (e) {}
           function done(text) {
             post('request', {
+              requestKey: requestKey,
+              lifecycleStatus: 'completed',
               method: String(method).toUpperCase(),
               url: url,
               status: res.status,
@@ -72,6 +95,7 @@
         },
         function (err) {
           post('request', {
+            requestKey: requestKey, lifecycleStatus: 'completed',
             method: String(method).toUpperCase(), url: url, status: 0,
             statusText: 'Network error', resourceType: 'fetch', durationMs: Date.now() - start,
             startedDateTime: new Date(start).toISOString(), requestHeaders: reqHeaders,
@@ -103,7 +127,26 @@
       var meta = self.__404am
       if (meta) {
         meta.start = Date.now()
+        meta.requestKey = 'xhr-' + (++reqSeq)
         if (typeof body === 'string') meta.body = body
+        post('request', {
+          requestKey: meta.requestKey,
+          lifecycleStatus: 'pending',
+          method: String(meta.method || 'GET').toUpperCase(),
+          url: meta.url,
+          status: 0,
+          statusText: 'Pending',
+          resourceType: 'xhr',
+          durationMs: -1,
+          startedDateTime: new Date(meta.start).toISOString(),
+          requestHeaders: meta.headers,
+          responseHeaders: [],
+          requestBody: meta.body != null ? { mimeType: '', text: meta.body } : undefined,
+          responseMimeType: '',
+          responseBodySize: 0,
+          responseBody: '',
+          responseEncoding: '',
+        })
         self.addEventListener('loadend', function () {
           var respHeaders = []
           try {
@@ -117,6 +160,8 @@
           var ct = ''
           try { ct = self.getResponseHeader('content-type') || '' } catch (e) {}
           post('request', {
+            requestKey: meta.requestKey,
+            lifecycleStatus: 'completed',
             method: String(meta.method || 'GET').toUpperCase(),
             url: meta.url,
             status: self.status,

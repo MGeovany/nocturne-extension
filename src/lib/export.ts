@@ -18,6 +18,7 @@ export function toJson(reqs: CapturedRequest[]): string {
   const requests = reqs.map((r) => ({
     method: r.method,
     url: r.url,
+    lifecycleStatus: r.lifecycleStatus,
     status: r.status,
     statusText: r.statusText,
     resourceType: r.resourceType,

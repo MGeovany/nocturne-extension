@@ -5,6 +5,8 @@ import type { NavMarker } from '../hooks/useNetworkRequests'
 import type { ConsoleEntry } from '../hooks/useConsoleLogs'
 
 interface RawRequest {
+  requestKey?: string
+  lifecycleStatus?: CapturedRequest['lifecycleStatus']
   method: string
   url: string
   status: number
@@ -29,6 +31,7 @@ let logs: ConsoleEntry[] = []
 let preserve = true
 let reqId = 0
 let logId = 0
+const requestKeys = new Map<string, number>()
 
 const listeners = new Set<Listener>()
 function emit() {
@@ -53,6 +56,7 @@ export function setPreserve(p: boolean) {
 export function clearRequests() {
   requests = []
   navigations = []
+  requestKeys.clear()
   emit()
 }
 
@@ -62,8 +66,11 @@ export function clearLogs() {
 }
 
 export function addRequest(raw: RawRequest) {
+  const existingId = raw.requestKey ? requestKeys.get(raw.requestKey) : undefined
+  const id = existingId ?? reqId++
   const captured: CapturedRequest = {
-    id: reqId++,
+    id,
+    lifecycleStatus: raw.lifecycleStatus ?? 'completed',
     method: raw.method,
     url: raw.url,
     status: raw.status,
@@ -79,7 +86,10 @@ export function addRequest(raw: RawRequest) {
     getContent: () =>
       Promise.resolve({ content: raw.responseBody ?? '', encoding: raw.responseEncoding ?? '' }),
   }
-  requests = requests.concat(captured)
+  if (raw.requestKey) requestKeys.set(raw.requestKey, id)
+  requests = existingId === undefined
+    ? requests.concat(captured)
+    : requests.map((request) => (request.id === existingId ? captured : request))
   emit()
 }
 
@@ -97,6 +107,7 @@ export function addNavigation(url: string) {
     requests = []
     navigations = []
     logs = []
+    requestKeys.clear()
     emit()
   }
 }

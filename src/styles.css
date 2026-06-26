@@ -432,6 +432,36 @@ button:disabled {
   font-size: 11px;
 }
 
+.state-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.state-chip::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.state-pending {
+  color: var(--yellow);
+}
+
+.state-chip.state-pending {
+  background: rgba(212, 168, 67, 0.12);
+  border-color: rgba(212, 168, 67, 0.2);
+}
+
 .request-row .duration.slow {
   color: var(--orange);
   font-weight: 600;
@@ -572,16 +602,16 @@ button:disabled {
 /* ---- Workspace (right panel) ---- */
 .workspace {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
+  min-height: 0;
+  overflow: hidden;
   background: var(--workspace);
 }
 
 .workspace-mode-bar {
-  position: sticky;
-  top: 0;
-  z-index: 4;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -604,14 +634,11 @@ button:disabled {
   border-color: transparent;
 }
 
-.workspace .detail-header {
-  top: 42px;
-}
-
 .detail {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  flex: 1;
+  min-height: 0;
   min-width: 0;
   width: 100%;
   overflow-x: hidden;
@@ -623,9 +650,6 @@ button:disabled {
 }
 
 .detail-header {
-  position: sticky;
-  top: 0;
-  z-index: 2;
   flex-shrink: 0;
   min-width: 0;
   background: var(--workspace);
@@ -708,9 +732,17 @@ button:disabled {
 .tab-bar-actions {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 6px;
   margin-left: auto;
+  overflow-x: auto;
+  padding: 6px 0;
+  max-width: 100%;
+}
+
+.tab-bar-actions button,
+.tab-bar-actions .check {
+  flex-shrink: 0;
 }
 
 .tab {
@@ -751,8 +783,10 @@ button:disabled {
   padding: 12px;
   flex: 1;
   min-width: 0;
+  min-height: 0;
   width: 100%;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .detail-section {

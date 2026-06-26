@@ -153,6 +153,7 @@ export function RequestDetail({
   const [bodyQuery, setBodyQuery] = useState('')
   const [tab, setTab] = useState<Tab>('preview')
   const [bodyView, setBodyView] = useState<'tree' | 'raw'>('tree')
+  const detailBodyRef = useRef<HTMLDivElement>(null)
   const bodyRef = useRef<HTMLDivElement>(null)
 
   // Read the latest seed without re-running the load effect on every keystroke.
@@ -163,8 +164,10 @@ export function RequestDetail({
     setBody(null)
     const seed = seedRef.current
     setBodyQuery(seed)
-    setTab(seed ? 'body' : 'preview')
-    if (!req) return
+    if (!req) {
+      setLoadingBody(false)
+      return
+    }
     let cancelled = false
     setLoadingBody(true)
     req.getContent().then((res) => {
@@ -176,6 +179,10 @@ export function RequestDetail({
       cancelled = true
     }
   }, [req])
+
+  useEffect(() => {
+    detailBodyRef.current?.scrollTo({ top: 0 })
+  }, [tab, req?.id])
 
   // Jump to the first match whenever the body or query changes on the Body tab.
   useEffect(() => {
@@ -208,6 +215,7 @@ export function RequestDetail({
     ? tryFormatJson(responseText, req.responseMimeType).formatted
     : ''
   const matchCount = bodyQuery ? countMatches(formattedResponse, bodyQuery) : 0
+  const lifecycleStatus = req.lifecycleStatus ?? 'completed'
 
   let respParsed: any
   if (!isBinary && responseText) {
@@ -239,6 +247,7 @@ export function RequestDetail({
             <span className={`status-pill ${statusClass(req.status)}`}>
               {req.status || '···'}
             </span>
+            {lifecycleStatus === 'pending' && <span className="meta-chip state-chip state-pending">pending</span>}
             <span className="meta-chip">
               {req.durationMs >= 0 ? `${req.durationMs} ms` : '···'}
             </span>
@@ -294,7 +303,7 @@ export function RequestDetail({
         </div>
       </div>
 
-      <div className="detail-body">
+      <div ref={detailBodyRef} className="detail-body">
         {tab === 'preview' && (
           <section>
             <dl className="overview">
@@ -302,6 +311,12 @@ export function RequestDetail({
               <dd className={statusClass(req.status)}>
                 {req.status || 'pending'} {req.statusText}
               </dd>
+              {lifecycleStatus === 'pending' && (
+                <>
+                  <dt>Request</dt>
+                  <dd className="state-text state-pending">pending</dd>
+                </>
+              )}
               <dt>Duration</dt>
               <dd>{req.durationMs >= 0 ? `${req.durationMs} ms` : 'pending'}</dd>
               <dt>Type</dt>

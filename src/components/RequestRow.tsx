@@ -2,6 +2,10 @@ import { useEffect, useRef } from 'react'
 import type { CapturedRequest } from '../types'
 import { categoryOf, formatBytes } from '../lib/contentType'
 
+function lifecycleStatus(req: CapturedRequest): CapturedRequest['lifecycleStatus'] {
+  return req.lifecycleStatus ?? 'completed'
+}
+
 export function statusClass(status: number): string {
   if (status === 0) return 'status-pending'
   if (status >= 500) return 'status-5xx'
@@ -53,6 +57,7 @@ export function RequestRow({
   onToggleFavorite,
 }: Props) {
   const cat = categoryOf(req.responseMimeType)
+  const state = lifecycleStatus(req)
   const isSlow = slowThresholdMs > 0 && req.durationMs >= slowThresholdMs
   const ref = useRef<HTMLDivElement>(null)
 
@@ -100,6 +105,7 @@ export function RequestRow({
           <span className={`status ${statusClass(req.status)}`}>
             {req.status || '···'}
           </span>
+          {state === 'pending' && <span className="state-chip state-pending">pending</span>}
           <span className={`duration ${isSlow ? 'slow' : ''}`}>
             {req.durationMs >= 0 ? `${req.durationMs} ms` : '···'}
           </span>

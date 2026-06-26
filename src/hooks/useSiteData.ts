@@ -144,7 +144,6 @@ function clearBrowsingData(origin: string): Promise<void> {
           indexedDB: true,
           localStorage: true,
           serviceWorkers: true,
-          webSQL: true,
         },
         () => {
           const lastError = chrome.runtime?.lastError

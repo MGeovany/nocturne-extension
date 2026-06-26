@@ -8,12 +8,15 @@ export interface RequestBody {
   text?: string
 }
 
+export type RequestLifecycleStatus = 'pending' | 'completed'
+
 /**
- * A normalized view of a single finished network request, derived from the
- * HAR entry that `chrome.devtools.network.onRequestFinished` hands us.
+ * A normalized view of a single network request. DevTools entries arrive once
+ * completed; injected sources can emit a pending entry and update it later.
  */
 export interface CapturedRequest {
   id: number
+  lifecycleStatus: RequestLifecycleStatus
   method: string
   url: string
   status: number

@@ -22,6 +22,7 @@ function restoreRequest(request: PersistedRequest): CapturedRequest {
   const { responseContent, ...restored } = request
   return {
     ...restored,
+    lifecycleStatus: restored.lifecycleStatus ?? 'completed',
     getContent: async () => responseContent ?? { content: '', encoding: '' },
   }
 }
@@ -101,6 +102,7 @@ export function useNetworkRequests(preserveLog: boolean) {
 
         const captured: CapturedRequest = {
           id,
+          lifecycleStatus: 'completed',
           method: entry.request.method,
           url: entry.request.url,
           status: entry.response.status,

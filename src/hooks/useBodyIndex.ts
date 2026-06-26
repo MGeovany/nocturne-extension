@@ -18,6 +18,7 @@ export function useBodyIndex(requests: CapturedRequest[], enabled: boolean) {
     if (!enabled) return
     let cancelled = false
     for (const r of requests) {
+      if (r.lifecycleStatus === 'pending') continue
       if (cache.current.has(r.id) || inFlight.current.has(r.id)) continue
       inFlight.current.add(r.id)
       r.getContent().then(({ content }) => {
