@@ -62,6 +62,17 @@ npm run package   # builds dist/ and writes 404-am-v<version>.zip
 
 Publishing files in this repo: [`STORE_LISTING.md`](./STORE_LISTING.md), [`PRIVACY.md`](./PRIVACY.md), [`LICENSE`](./LICENSE), [`scripts/package.mjs`](./scripts/package.mjs), [`CHANGELOG.md`](./CHANGELOG.md).
 
+## Publish to Microsoft Edge Add-ons
+
+```bash
+npm run package:edge   # builds dist/ and writes 404-am-edge-v<version>.zip
+```
+
+1. Bump `version` in **both** `package.json` and `public/manifest.json`.
+2. Run `npm run package:edge` to produce `404-am-edge-v<version>.zip`.
+3. Upload the zip at <https://partner.microsoft.com/dashboard/microsoftedge/>.
+4. **Listing:** [404-AM on Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/404am/moeapnkcablnlgiofkblcjppinifdood).
+
 ## Publish to Firefox (addons.mozilla.org)
 
 The same code runs on Firefox (it uses the `chrome.*` namespace, which Firefox
