@@ -1,0 +1,615 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9699FD362FE597A400E7997A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9699FD352FE597A400E7997A /* AppDelegate.swift */; };
+		9699FD3A2FE597A400E7997A /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = 9699FD382FE597A400E7997A /* Main.html */; };
+		9699FD3C2FE597A400E7997A /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9699FD3B2FE597A400E7997A /* Icon.png */; };
+		9699FD3E2FE597A400E7997A /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = 9699FD3D2FE597A400E7997A /* Style.css */; };
+		9699FD402FE597A400E7997A /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = 9699FD3F2FE597A400E7997A /* Script.js */; };
+		9699FD422FE597A400E7997A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9699FD412FE597A400E7997A /* ViewController.swift */; };
+		9699FD452FE597A400E7997A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9699FD432FE597A400E7997A /* Main.storyboard */; };
+		9699FD472FE597A500E7997A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9699FD462FE597A500E7997A /* Assets.xcassets */; };
+		9699FD4E2FE597A500E7997A /* nocturne Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9699FD4D2FE597A500E7997A /* nocturne Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9699FD532FE597A500E7997A /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9699FD522FE597A500E7997A /* SafariWebExtensionHandler.swift */; };
+		9699FD632FE597A500E7997A /* icons in Resources */ = {isa = PBXBuildFile; fileRef = 9699FD5F2FE597A500E7997A /* icons */; };
+		9699FD642FE597A500E7997A /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 9699FD602FE597A500E7997A /* manifest.json */; };
+		9699FD652FE597A500E7997A /* inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 9699FD612FE597A500E7997A /* inject.js */; };
+		9699FD662FE597A500E7997A /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = 9699FD622FE597A500E7997A /* content.js */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9699FD4F2FE597A500E7997A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9699FD2A2FE597A400E7997A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9699FD4C2FE597A500E7997A;
+			remoteInfo = "nocturne Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9699FD5A2FE597A500E7997A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				9699FD4E2FE597A500E7997A /* nocturne Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		9699FD322FE597A400E7997A /* nocturne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "nocturne.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9699FD352FE597A400E7997A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9699FD392FE597A400E7997A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/Main.html; sourceTree = "<group>"; };
+		9699FD3B2FE597A400E7997A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		9699FD3D2FE597A400E7997A /* Style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = Style.css; sourceTree = "<group>"; };
+		9699FD3F2FE597A400E7997A /* Script.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Script.js; sourceTree = "<group>"; };
+		9699FD412FE597A400E7997A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9699FD442FE597A400E7997A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9699FD462FE597A500E7997A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9699FD482FE597A500E7997A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9699FD4D2FE597A500E7997A /* nocturne Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "nocturne Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9699FD522FE597A500E7997A /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		9699FD542FE597A500E7997A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9699FD5F2FE597A500E7997A /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = "../../../dist-safari/icons"; sourceTree = "<group>"; };
+		9699FD602FE597A500E7997A /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = "../../../dist-safari/manifest.json"; sourceTree = "<group>"; };
+		9699FD612FE597A500E7997A /* inject.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = inject.js; path = "../../../dist-safari/inject.js"; sourceTree = "<group>"; };
+		9699FD622FE597A500E7997A /* content.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = content.js; path = "../../../dist-safari/content.js"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9699FD2F2FE597A400E7997A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9699FD4A2FE597A500E7997A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9699FD292FE597A400E7997A = {
+			isa = PBXGroup;
+			children = (
+				9699FD342FE597A400E7997A /* nocturne */,
+				9699FD512FE597A500E7997A /* nocturne Extension */,
+				9699FD332FE597A400E7997A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9699FD332FE597A400E7997A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9699FD322FE597A400E7997A /* nocturne.app */,
+				9699FD4D2FE597A500E7997A /* nocturne Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9699FD342FE597A400E7997A /* nocturne */ = {
+			isa = PBXGroup;
+			children = (
+				9699FD352FE597A400E7997A /* AppDelegate.swift */,
+				9699FD412FE597A400E7997A /* ViewController.swift */,
+				9699FD432FE597A400E7997A /* Main.storyboard */,
+				9699FD462FE597A500E7997A /* Assets.xcassets */,
+				9699FD482FE597A500E7997A /* Info.plist */,
+				9699FD372FE597A400E7997A /* Resources */,
+			);
+			path = "nocturne";
+			sourceTree = "<group>";
+		};
+		9699FD372FE597A400E7997A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9699FD382FE597A400E7997A /* Main.html */,
+				9699FD3B2FE597A400E7997A /* Icon.png */,
+				9699FD3D2FE597A400E7997A /* Style.css */,
+				9699FD3F2FE597A400E7997A /* Script.js */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		9699FD512FE597A500E7997A /* nocturne Extension */ = {
+			isa = PBXGroup;
+			children = (
+				9699FD5E2FE597A500E7997A /* Resources */,
+				9699FD522FE597A500E7997A /* SafariWebExtensionHandler.swift */,
+				9699FD542FE597A500E7997A /* Info.plist */,
+			);
+			path = "nocturne Extension";
+			sourceTree = "<group>";
+		};
+		9699FD5E2FE597A500E7997A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9699FD5F2FE597A500E7997A /* icons */,
+				9699FD602FE597A500E7997A /* manifest.json */,
+				9699FD612FE597A500E7997A /* inject.js */,
+				9699FD622FE597A500E7997A /* content.js */,
+			);
+			name = Resources;
+			path = "nocturne Extension";
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9699FD312FE597A400E7997A /* nocturne */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9699FD5B2FE597A500E7997A /* Build configuration list for PBXNativeTarget "nocturne" */;
+			buildPhases = (
+				9699FD2E2FE597A400E7997A /* Sources */,
+				9699FD2F2FE597A400E7997A /* Frameworks */,
+				9699FD302FE597A400E7997A /* Resources */,
+				9699FD5A2FE597A500E7997A /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9699FD502FE597A500E7997A /* PBXTargetDependency */,
+			);
+			name = "nocturne";
+			packageProductDependencies = (
+			);
+			productName = "nocturne";
+			productReference = 9699FD322FE597A400E7997A /* nocturne.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9699FD4C2FE597A500E7997A /* nocturne Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9699FD572FE597A500E7997A /* Build configuration list for PBXNativeTarget "nocturne Extension" */;
+			buildPhases = (
+				9699FD492FE597A500E7997A /* Sources */,
+				9699FD4A2FE597A500E7997A /* Frameworks */,
+				9699FD4B2FE597A500E7997A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "nocturne Extension";
+			packageProductDependencies = (
+			);
+			productName = "nocturne Extension";
+			productReference = 9699FD4D2FE597A500E7997A /* nocturne Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9699FD2A2FE597A400E7997A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2650;
+				LastUpgradeCheck = 2650;
+				TargetAttributes = {
+					9699FD312FE597A400E7997A = {
+						CreatedOnToolsVersion = 26.5;
+					};
+					9699FD4C2FE597A500E7997A = {
+						CreatedOnToolsVersion = 26.5;
+					};
+				};
+			};
+			buildConfigurationList = 9699FD2D2FE597A400E7997A /* Build configuration list for PBXProject "nocturne" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9699FD292FE597A400E7997A;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 9699FD332FE597A400E7997A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9699FD312FE597A400E7997A /* nocturne */,
+				9699FD4C2FE597A500E7997A /* nocturne Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9699FD302FE597A400E7997A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9699FD3C2FE597A400E7997A /* Icon.png in Resources */,
+				9699FD452FE597A400E7997A /* Main.storyboard in Resources */,
+				9699FD402FE597A400E7997A /* Script.js in Resources */,
+				9699FD3A2FE597A400E7997A /* Main.html in Resources */,
+				9699FD472FE597A500E7997A /* Assets.xcassets in Resources */,
+				9699FD3E2FE597A400E7997A /* Style.css in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9699FD4B2FE597A500E7997A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9699FD662FE597A500E7997A /* content.js in Resources */,
+				9699FD642FE597A500E7997A /* manifest.json in Resources */,
+				9699FD632FE597A500E7997A /* icons in Resources */,
+				9699FD652FE597A500E7997A /* inject.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9699FD2E2FE597A400E7997A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9699FD422FE597A400E7997A /* ViewController.swift in Sources */,
+				9699FD362FE597A400E7997A /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9699FD492FE597A500E7997A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9699FD532FE597A500E7997A /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9699FD502FE597A500E7997A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9699FD4C2FE597A500E7997A /* nocturne Extension */;
+			targetProxy = 9699FD4F2FE597A500E7997A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		9699FD382FE597A400E7997A /* Main.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9699FD392FE597A400E7997A /* Base */,
+			);
+			name = Main.html;
+			sourceTree = "<group>";
+		};
+		9699FD432FE597A400E7997A /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9699FD442FE597A400E7997A /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9699FD552FE597A500E7997A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9699FD562FE597A500E7997A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		9699FD582FE597A500E7997A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F5AC2P3U57;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "nocturne Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Nocturne Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.thefndrs.nocturne.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		9699FD592FE597A500E7997A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F5AC2P3U57;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "nocturne Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Nocturne Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.thefndrs.nocturne.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		9699FD5C2FE597A500E7997A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F5AC2P3U57;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "nocturne/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Nocturne";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.thefndrs.nocturne;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		9699FD5D2FE597A500E7997A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F5AC2P3U57;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "nocturne/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Nocturne";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.thefndrs.nocturne;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9699FD2D2FE597A400E7997A /* Build configuration list for PBXProject "nocturne" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9699FD552FE597A500E7997A /* Debug */,
+				9699FD562FE597A500E7997A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9699FD572FE597A500E7997A /* Build configuration list for PBXNativeTarget "nocturne Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9699FD582FE597A500E7997A /* Debug */,
+				9699FD592FE597A500E7997A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9699FD5B2FE597A500E7997A /* Build configuration list for PBXNativeTarget "nocturne" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9699FD5C2FE597A500E7997A /* Debug */,
+				9699FD5D2FE597A500E7997A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9699FD2A2FE597A400E7997A /* Project object */;
+}

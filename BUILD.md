@@ -58,7 +58,7 @@ The submitted add-on is the `dist/` output with the Firefox manifest. To produce
 the identical zip:
 
 ```bash
-npm run package:firefox    # writes 404-am-firefox-v<version>.zip
+npm run package:firefox    # writes nocturne-firefox-v<version>.zip
 ```
 
 This runs `npm run build`, then replaces `dist/manifest.json` with

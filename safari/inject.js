@@ -2,10 +2,10 @@
 // forwards events to the content script via window.postMessage. Vanilla JS,
 // copied verbatim into the build (no bundling).
 ;(function () {
-  if (window.__404am_injected__) return
-  window.__404am_injected__ = true
+  if (window.__nocturne_injected__) return
+  window.__nocturne_injected__ = true
 
-  var SRC = '404am'
+  var SRC = 'nocturne'
   var reqSeq = 0
   function post(kind, payload) {
     try {
@@ -214,16 +214,16 @@
     var send = XHR.prototype.send
     var setHeader = XHR.prototype.setRequestHeader
     XHR.prototype.open = function (method, url) {
-      this.__404am = { method: method, url: url, headers: [], start: 0 }
+      this.__nocturne = { method: method, url: url, headers: [], start: 0 }
       return open.apply(this, arguments)
     }
     XHR.prototype.setRequestHeader = function (k, v) {
-      if (this.__404am) this.__404am.headers.push({ name: k, value: v })
+      if (this.__nocturne) this.__nocturne.headers.push({ name: k, value: v })
       return setHeader.apply(this, arguments)
     }
     XHR.prototype.send = function (body) {
       var self = this
-      var meta = self.__404am
+      var meta = self.__nocturne
       if (meta) {
         meta.start = Date.now()
         meta.requestKey = 'xhr-' + (++reqSeq)

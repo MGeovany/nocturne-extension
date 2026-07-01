@@ -7,7 +7,7 @@ import { resolve } from 'node:path'
 
 const root = process.cwd()
 const pkg = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'))
-const out = `404-am-safari-v${pkg.version}.zip`
+const out = `nocturne-safari-v${pkg.version}.zip`
 const manifestPath = resolve(root, 'dist-safari', 'manifest.json')
 
 if (!existsSync(manifestPath)) {
@@ -28,4 +28,4 @@ execSync(`cd dist-safari && zip -r -X "../${out}" . -x ".*" -x "**/.*"`, {
 })
 
 console.log(`\n✓ Created ${out}`)
-console.log('  Xcode project: safari-app/404-AM/404-AM.xcodeproj')
+console.log('  Xcode project: safari-app/nocturne/nocturne.xcodeproj')

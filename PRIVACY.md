@@ -1,16 +1,16 @@
-# Privacy Policy — 404-AM
+# Privacy Policy — Nocturne
 
 _Last updated: 2026-06-19_
 
-**Canonical URL:** https://404am.thefndrs.com/privacy/
+**Canonical URL:** https://nocturne.thefndrs.com/privacy/
 
-404-AM is a browser extension that helps developers inspect and debug network
+Nocturne is a browser extension that helps developers inspect and debug network
 requests and console output on web pages they are working on. This policy applies
 to Chrome/Firefox/Edge DevTools builds and the Safari Web Extension.
 
 ## Data we collect
 
-**None.** 404-AM does not collect, transmit, sell, or share any data. There are
+**None.** Nocturne does not collect, transmit, sell, or share any data. There are
 no analytics, no accounts, no tracking, and no remote servers. Everything runs
 locally on your device.
 
@@ -18,7 +18,7 @@ locally on your device.
 
 ### Network requests
 
-404-AM reads fetch and XHR traffic from the page you are debugging so it can
+Nocturne reads fetch and XHR traffic from the page you are debugging so it can
 show method, URL, status, timing, headers, payloads, and response bodies in the
 panel. This data is displayed on your device only and is never sent to us or any
 third party.
@@ -53,11 +53,11 @@ locally using browser extension storage on your own device.
 - `http://*/*` and `https://*/*` (Safari only) — required so the extension can
   run on web pages you choose to debug and show the overlay panel.
 
-404-AM runs **no remote code** and sends no captured data to external services.
+Nocturne runs **no remote code** and sends no captured data to external services.
 
 ## Children
 
-404-AM is a developer tool and is not directed at children under 13.
+Nocturne is a developer tool and is not directed at children under 13.
 
 ## Changes
 
@@ -67,5 +67,5 @@ will reflect the latest revision.
 ## Contact
 
 For questions about this policy, open an issue in the
-[project repository](https://github.com/MGeovany/404-AM/issues) or visit
-https://404am.thefndrs.com/support/
+[project repository](https://github.com/MGeovany/nocturne/issues) or visit
+https://nocturne.thefndrs.com/support/

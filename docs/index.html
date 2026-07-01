@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>404-AM — Network &amp; Console DevTools</title>
+    <title>Nocturne | Network &amp; Console DevTools</title>
     <meta
       name="description"
-      content="A Chrome DevTools panel to inspect, filter and debug a page's fetch/XHR requests and console logs — with a one-click Copy for AI."
+      content="A DevTools panel to inspect, filter and debug a page's fetch/XHR requests and console logs, with a one-click Copy for AI."
     />
     <style>
       :root {
@@ -36,7 +36,7 @@
         height: 56px;
         margin: 0 auto 20px;
         border-radius: 14px;
-        background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+        display: block;
         box-shadow: 0 0 40px rgba(106, 102, 255, 0.45);
       }
       h1 { font-size: 44px; margin: 0 0 8px; letter-spacing: -0.03em; }
@@ -52,6 +52,7 @@
       }
       .btn-primary { background: var(--accent); color: #fff; }
       .btn-ghost { border: 1px solid var(--border); color: var(--fg); }
+      .browser-note { color: var(--muted); font-size: 13px; margin: 12px auto 0; max-width: 520px; }
 
       section { padding: 40px 0; }
       h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 20px; }
@@ -65,6 +66,8 @@
       }
       .feat h3 { margin: 0 0 6px; font-size: 16px; }
       .feat p { margin: 0; color: var(--muted); font-size: 14px; }
+      .support-list { margin: 0; padding-left: 20px; color: var(--muted); }
+      .support-list strong { color: var(--fg); }
 
       .ai {
         background: linear-gradient(135deg, rgba(106, 102, 255, 0.12), rgba(155, 89, 255, 0.06));
@@ -89,26 +92,25 @@
   <body>
     <header>
       <div class="wrap">
-        <div class="mark"></div>
-        <h1>404-AM</h1>
+        <img class="mark" src="icon.png" alt="Nocturne logo" width="56" height="56" />
+        <h1>Nocturne</h1>
         <p class="tag">
-          A focused Chrome DevTools panel to inspect, filter, and debug your
-          app's network requests and console logs — and explain failures to AI
+          A focused DevTools panel to inspect, filter, and debug your
+          app's network requests and console logs. Explain failures to AI
           in one click.
         </p>
         <div class="cta">
-          <!-- Replace with your Chrome Web Store URL once published. -->
-          <a class="btn btn-primary" href="#install">Add to Chrome</a>
-          <a class="btn btn-ghost" href="https://microsoftedge.microsoft.com/addons/detail/404am/moeapnkcablnlgiofkblcjppinifdood">Add to Microsoft Edge</a>
-          <a class="btn btn-ghost" href="https://github.com/">View on GitHub</a>
+          <a id="browser-add" class="btn btn-primary" href="https://github.com/MGeovany/nocturne/releases">Download Nocturne</a>
+          <a id="repo-link" class="btn btn-ghost" href="https://github.com/MGeovany/nocturne">View Nocturne on GitHub</a>
         </div>
+        <p id="browser-note" class="browser-note">Detecting your browser...</p>
       </div>
     </header>
 
     <section class="wrap">
       <h2>What it does</h2>
       <div class="grid">
-        <div class="feat"><h3>Live request capture</h3><p>Every fetch/XHR with method, status, duration, size and content-type — filter by errors, slow, type, or search URLs and bodies.</p></div>
+        <div class="feat"><h3>Live request capture</h3><p>Every fetch/XHR with method, status, duration, size and content-type. Filter by errors, slow, type, or search URLs and bodies.</p></div>
         <div class="feat"><h3>Rich detail</h3><p>Headers (important ones highlighted, secrets masked), payloads, and response bodies with JSON syntax highlighting.</p></div>
         <div class="feat"><h3>Interactive JSON tree</h3><p>Click a key to copy its path (<code>data.items[0].id</code>), click a value to copy it.</p></div>
         <div class="feat"><h3>Console, together</h3><p>An integrated console panel shows the page's logs right beside the requests.</p></div>
@@ -122,13 +124,13 @@
         <h2>Copy for AI</h2>
         <p>
           Hit a failing request, click <strong>Copy for AI</strong>, and paste a
-          ready-made, secret-masked debug brief into your assistant — what
+          ready-made, secret-masked debug brief into your assistant, with what
           failed, where to look in your codebase, the full request/response
           context, and recent console errors.
         </p>
-        <pre># Failed network request — debug brief
+        <pre># Failed network request | debug brief
 ## What failed
-- `GET https://api.example.com/v1/users/42` → **500** — a 5xx server-side error
+- `GET https://api.example.com/v1/users/42` → **500** | a 5xx server-side error
 ## Where to look
 - Endpoint path: `/v1/users/42`
 - Correlate with backend logs using: `x-request-id=req-8f3a…`
@@ -140,19 +142,70 @@
     <section class="wrap" id="install">
       <h2>Install</h2>
       <div class="feat">
-        <p style="margin-bottom: 12px">From source:</p>
+        <p style="margin-bottom: 12px">Current browser support:</p>
+        <ul class="support-list">
+          <li><strong>Nocturne for Microsoft Edge:</strong> available now from Edge Add-ons.</li>
+          <li><strong>Nocturne for Safari:</strong> available now from the Mac App Store.</li>
+          <li><strong>Nocturne for Chrome:</strong> coming soon. Download from the GitHub repo for now.</li>
+          <li><strong>Nocturne for Firefox:</strong> coming soon. Download from the GitHub repo for now.</li>
+          <li><strong>Nocturne for Opera:</strong> coming soon. Download from the GitHub repo for now.</li>
+        </ul>
+      </div>
+      <div class="feat" style="margin-top: 16px">
+        <p style="margin-bottom: 12px">Build from source:</p>
         <pre>npm install
 npm run build
 # chrome://extensions → Developer mode → Load unpacked → select dist/
-# Open DevTools → "404-AM" tab</pre>
+# Open DevTools → "Nocturne" tab</pre>
       </div>
     </section>
 
     <footer>
       <div class="wrap">
-        404-AM collects no data — everything stays in your browser.
+        Nocturne collects no data. Everything stays in your browser.
         <a href="../PRIVACY.md">Privacy policy</a> · MIT licensed
       </div>
     </footer>
+    <script>
+      const edgeUrl = 'https://microsoftedge.microsoft.com/addons/detail/nocturne/moeapnkcablnlgiofkblcjppinifdood'
+      const safariUrl = 'https://apps.apple.com/us/app/404am-network-devtools/id6782160193?mt=12'
+      const repoUrl = 'https://github.com/MGeovany/nocturne'
+      const releasesUrl = `${repoUrl}/releases`
+      const ua = navigator.userAgent
+      const cta = document.getElementById('browser-add')
+      const note = document.getElementById('browser-note')
+
+      const isEdge = /Edg\//.test(ua)
+      const isOpera = /OPR\//.test(ua) || /Opera\//.test(ua)
+      const isFirefox = /Firefox\//.test(ua) || /FxiOS\//.test(ua)
+      const isChrome = (/Chrome\//.test(ua) || /CriOS\//.test(ua) || /Chromium\//.test(ua)) && !isEdge && !isOpera
+      const isSafari = /Safari\//.test(ua) && !isChrome && !isEdge && !isOpera && !isFirefox
+
+      if (isEdge) {
+        cta.textContent = 'Add Nocturne to Microsoft Edge'
+        cta.href = edgeUrl
+        note.textContent = 'Edge is supported now. Install Nocturne from Microsoft Edge Add-ons.'
+      } else if (isSafari) {
+        cta.textContent = 'Get Nocturne for Safari'
+        cta.href = safariUrl
+        note.textContent = 'Safari is supported now. Get Nocturne from the Mac App Store.'
+      } else if (isChrome) {
+        cta.textContent = 'Nocturne for Chrome coming soon'
+        cta.href = repoUrl
+        note.textContent = 'Chrome Web Store support is coming soon. Download from the GitHub repo for now.'
+      } else if (isFirefox) {
+        cta.textContent = 'Nocturne for Firefox coming soon'
+        cta.href = repoUrl
+        note.textContent = 'Firefox support is coming soon. Download from the GitHub repo for now.'
+      } else if (isOpera) {
+        cta.textContent = 'Nocturne for Opera coming soon'
+        cta.href = repoUrl
+        note.textContent = 'Opera support is coming soon. Download from the GitHub repo for now.'
+      } else {
+        cta.textContent = 'Download Nocturne from GitHub'
+        cta.href = releasesUrl
+        note.textContent = 'Nocturne supports Edge and Safari now. Chrome, Firefox, and Opera are coming soon.'
+      }
+    </script>
   </body>
 </html>

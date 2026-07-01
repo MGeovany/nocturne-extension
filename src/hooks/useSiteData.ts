@@ -68,7 +68,7 @@ async function waitForPageToken<T>(token: string): Promise<T> {
 }
 
 async function evalAsyncInInspectedPage<T>(body: string): Promise<T> {
-  const token = `__404AM_SITE_DATA_${Date.now()}_${Math.random().toString(36).slice(2)}`
+  const token = `__nocturne_SITE_DATA_${Date.now()}_${Math.random().toString(36).slice(2)}`
   await evalInInspectedPage<string>(`(function () {
     var token = ${JSON.stringify(token)};
     window[token] = null;

@@ -216,6 +216,7 @@ export function RequestDetail({
     : ''
   const matchCount = bodyQuery ? countMatches(formattedResponse, bodyQuery) : 0
   const lifecycleStatus = req.lifecycleStatus ?? 'completed'
+  const endpoint = shortPath(req.url)
 
   let respParsed: any
   if (!isBinary && responseText) {
@@ -240,9 +241,19 @@ export function RequestDetail({
       <div className="detail-header">
         <div className="url-bar">
           <span className={`method-pill ${methodClass(req.method)}`}>{req.method}</span>
-          <span className="url-bar-path" title={req.url}>
-            {shortPath(req.url)}
-          </span>
+          <button
+            type="button"
+            className="url-bar-path-wrap"
+            onClick={() => flash('endpoint', endpoint)}
+          >
+            <span className="url-bar-path">{endpoint}</span>
+            <span className="url-bar-path-popover" role="tooltip">
+              {endpoint}
+              <span className="url-bar-copy-hint">
+                {copied === 'endpoint' ? 'Copied' : 'Click to copy'}
+              </span>
+            </span>
+          </button>
           <div className="url-bar-meta">
             <span className={`status-pill ${statusClass(req.status)}`}>
               {req.status || '···'}

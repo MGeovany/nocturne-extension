@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "404-AM",
+  "name": "Nocturne",
   "version": "0.1.0",
   "description": "DevTools panel to inspect fetch and XHR requests on any page.",
   "devtools_page": "devtools.html",
@@ -14,7 +14,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "404-am@geovany.dev",
+      "id": "nocturne@geovany.dev",
       "strict_min_version": "115.0",
       "data_collection_permissions": {
         "required": ["none"]

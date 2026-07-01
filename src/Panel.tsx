@@ -189,14 +189,14 @@ export function Panel() {
   }
 
   const handleExportJson = () => {
-    downloadFile(`404-am-${timestamp()}.json`, toJson(filtered), 'application/json')
+    downloadFile(`nocturne-${timestamp()}.json`, toJson(filtered), 'application/json')
   }
 
   const handleExportHar = async () => {
     setExporting(true)
     try {
       const har = await toHar(filtered)
-      downloadFile(`404-am-${timestamp()}.har`, har, 'application/json')
+      downloadFile(`nocturne-${timestamp()}.har`, har, 'application/json')
     } finally {
       setExporting(false)
     }

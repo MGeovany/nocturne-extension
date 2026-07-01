@@ -1,4 +1,4 @@
-# 404-AM
+# Nocturne
 
 Chrome DevTools panel to inspect `fetch` and XHR requests: status, duration, headers, payload and response body. Sensitive values are masked by default. Copy as cURL or fetch.
 
@@ -18,7 +18,7 @@ pnpm watch
 2. Open `chrome://extensions`.
 3. Enable **Developer mode**.
 4. Click **Load unpacked** and select the `dist/` folder.
-5. Open DevTools on any page → **404-AM** tab.
+5. Open DevTools on any page → **Nocturne** tab.
 
 After changing code, run `pnpm build` or keep `pnpm watch` running, then close and reopen DevTools.
 
@@ -26,7 +26,7 @@ After changing code, run `pnpm build` or keep `pnpm watch` running, then close a
 
 ```bash
 npm run build:safari
-open safari-app/404-AM/404-AM.xcodeproj
+open safari-app/nocturne/nocturne.xcodeproj
 ```
 
 The Safari Xcode project references `dist-safari/` directly, so rebuild with `npm run build:safari` after changing shared UI, source hooks, or the injected capture script.
@@ -34,7 +34,7 @@ The Safari Xcode project references `dist-safari/` directly, so rebuild with `np
 For a zip of the Safari web-extension resources:
 
 ```bash
-npm run package:safari   # writes 404-am-safari-v<version>.zip
+npm run package:safari   # writes nocturne-safari-v<version>.zip
 ```
 
 ## Architecture
@@ -49,11 +49,11 @@ No background service worker is needed.
 ## Publish to the Chrome Web Store
 
 ```bash
-npm run package   # builds dist/ and writes 404-am-v<version>.zip
+npm run package   # builds dist/ and writes nocturne-v<version>.zip
 ```
 
 1. Bump `version` in **both** `package.json` and `public/manifest.json`.
-2. Run `npm run package` to produce `404-am-v<version>.zip` (manifest at the zip root).
+2. Run `npm run package` to produce `nocturne-v<version>.zip` (manifest at the zip root).
 3. Open the [Developer Console](https://chrome.google.com/webstore/devconsole) and upload the zip.
 4. Fill in the listing using [`STORE_LISTING.md`](./STORE_LISTING.md) (name, descriptions, permission justifications, privacy answers).
 5. Host [`PRIVACY.md`](./PRIVACY.md) publicly and paste its URL into the privacy policy field.
@@ -65,13 +65,13 @@ Publishing files in this repo: [`STORE_LISTING.md`](./STORE_LISTING.md), [`PRIVA
 ## Publish to Microsoft Edge Add-ons
 
 ```bash
-npm run package:edge   # builds dist/ and writes 404-am-edge-v<version>.zip
+npm run package:edge   # builds dist/ and writes nocturne-edge-v<version>.zip
 ```
 
 1. Bump `version` in **both** `package.json` and `public/manifest.json`.
-2. Run `npm run package:edge` to produce `404-am-edge-v<version>.zip`.
+2. Run `npm run package:edge` to produce `nocturne-edge-v<version>.zip`.
 3. Upload the zip at <https://partner.microsoft.com/dashboard/microsoftedge/>.
-4. **Listing:** [404-AM on Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/404am/moeapnkcablnlgiofkblcjppinifdood).
+4. **Listing:** [Nocturne on Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/nocturne/moeapnkcablnlgiofkblcjppinifdood).
 
 ## Publish to Firefox (addons.mozilla.org)
 
@@ -80,16 +80,16 @@ supports). Only the manifest differs — see [`manifest.firefox.json`](./manifes
 (adds `browser_specific_settings.gecko`, drops Chrome-only keys).
 
 ```bash
-npm run package:firefox   # writes 404-am-firefox-v<version>.zip
+npm run package:firefox   # writes nocturne-firefox-v<version>.zip
 ```
 
-1. Edit the Gecko `id` in `manifest.firefox.json` (e.g. `404-am@yourdomain`).
+1. Edit the Gecko `id` in `manifest.firefox.json` (e.g. `nocturne@yourdomain`).
 2. Run `npm run package:firefox`.
 3. Submit the zip at <https://addons.mozilla.org/developers/addon/submit/>.
-4. **Listing:** [404-AM on Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/d99a19ad970049ecb787/) (developer id `d99a19ad970049ecb787`).
+4. **Listing:** [Nocturne on Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/d99a19ad970049ecb787/) (developer id `d99a19ad970049ecb787`).
 5. **Source code:** because the upload is bundled/minified, AMO review requires
    the source. Run `npm run package:source` to produce
-   `404-am-source-v<version>.zip`, and see [`BUILD.md`](./BUILD.md) for the
+   `nocturne-source-v<version>.zip`, and see [`BUILD.md`](./BUILD.md) for the
    reproducible build instructions reviewers need (OS/env, Node/npm versions,
    steps).
 
@@ -100,7 +100,7 @@ npm run package:firefox   # writes 404-am-firefox-v<version>.zip
 
 - **CI** (`.github/workflows/ci.yml`) runs typecheck + build on every push/PR.
 - **Release** (`.github/workflows/release.yml`) builds and attaches
-  `404-am-v<version>.zip` to a GitHub Release whenever you push a `v*` tag:
+  `nocturne-v<version>.zip` to a GitHub Release whenever you push a `v*` tag:
   ```bash
   git tag v0.1.0 && git push origin v0.1.0
   ```

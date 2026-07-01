@@ -75,7 +75,7 @@ export function Filters({
       <div className="sidebar-title-row">
         <div className="brand">
           <img className="brand-icon" src={iconUrl} alt="" width={18} height={18} />
-          <span className="brand-name">404-AM</span>
+          <span className="brand-name">Nocturne</span>
         </div>
         <div className="sidebar-actions">
           <span className="count">{shown}/{total}</span>

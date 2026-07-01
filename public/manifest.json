@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "404-AM",
+  "name": "Nocturne",
   "version": "0.1.0",
   "description": "DevTools panel to inspect fetch and XHR requests on any page.",
   "minimum_chrome_version": "100",

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "404-AM",
+  "name": "Nocturne",
   "version": "0.1.0",
   "description": "Inspect, filter and debug a page's fetch/XHR requests and console logs.",
   "permissions": ["storage"],

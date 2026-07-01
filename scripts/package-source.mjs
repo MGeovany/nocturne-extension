@@ -6,7 +6,7 @@ import { resolve } from 'node:path'
 
 const root = process.cwd()
 const pkg = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'))
-const out = `404-am-source-v${pkg.version}.zip`
+const out = `nocturne-source-v${pkg.version}.zip`
 
 if (existsSync(resolve(root, out))) rmSync(resolve(root, out))
 

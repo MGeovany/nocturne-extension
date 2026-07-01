@@ -1,4 +1,4 @@
-# App Review Information — Notes (404-AM)
+# App Review Information — Notes (Nocturne)
 
 Paste the block below into **App Store Connect → App Review Information → Notes**.
 It answers Apple's Guideline 2.1 "Information Needed" request point-by-point.
@@ -7,7 +7,7 @@ It answers Apple's Guideline 2.1 "Information Needed" request point-by-point.
 
 ## Notes for the App Review team
 
-404-AM is a developer tool delivered as a **Safari Web Extension** (macOS). The
+Nocturne is a developer tool delivered as a **Safari Web Extension** (macOS). The
 container app's only job is to let the user enable the extension in Safari; all
 features live in an overlay panel that appears inside Safari web pages once the
 extension is turned on. Below is everything requested.
@@ -16,11 +16,11 @@ extension is turned on. Below is everything requested.
 
 A screen recording is attached showing the full flow:
 
-1. Launch the 404-AM app.
-2. Tap "Quit and Open Safari Extensions Preferences…" and enable the 404-AM
+1. Launch the Nocturne app.
+2. Tap "Quit and Open Safari Extensions Preferences…" and enable the Nocturne
   extension (and allow it on the current website).
 3. Open any website in Safari (e.g. a page that makes fetch/XHR calls).
-4. Open the 404-AM overlay panel and show core features: live capture of
+4. Open the Nocturne overlay panel and show core features: live capture of
   network requests (method, URL, status, timing), filtering by errors/slow/
    content-type, request detail tabs (Preview, Headers, Body, Traces), the JSON
    tree viewer, "Copy as cURL / fetch", and the "Copy for AI" debug brief.
@@ -37,10 +37,10 @@ Transparency.
 
 ### 3. Purpose and target audience
 
-404-AM is a network and console inspector for **web developers and QA
+Nocturne is a network and console inspector for **web developers and QA
 engineers**. While debugging a web app, developers need to see exactly what each
 network request did — status, timing, headers, payload and response body — and
-quickly share that context. 404-AM surfaces this in a focused Safari overlay
+quickly share that context. Nocturne surfaces this in a focused Safari overlay
 panel, with secrets masked by default and a one-click "Copy for AI" that
 produces a structured, secret-masked debug brief to paste into an AI assistant.
 It solves the problem of slow, scattered network debugging and the risk of
@@ -51,20 +51,20 @@ utility (Developer Tools category) and is not directed at children.
 
 No login, credentials, or sample files are required. Steps:
 
-1. Open the 404-AM app and click "Quit and Open Safari Extensions Preferences…".
-2. In Safari → Settings → Extensions, enable **404-AM** and allow it on the
+1. Open the Nocturne app and click "Quit and Open Safari Extensions Preferences…".
+2. In Safari → Settings → Extensions, enable **Nocturne** and allow it on the
   websites you want to debug (or "Always Allow on Every Website").
 3. Browse to a website that performs network requests. Any modern site works;
    for a guaranteed example with live fetch/XHR traffic, open
    **https://jsonplaceholder.typicode.com/** (its homepage runs live fetch
    requests) — or any single-page web app such as **https://github.com/**.
-4. Open the 404-AM overlay panel on the page to inspect captured fetch/XHR
+4. Open the Nocturne overlay panel on the page to inspect captured fetch/XHR
   traffic and console output. All features are available immediately and for
    free — no purchase or unlock.
 
 ### 5. External services, tools, or platforms
 
-**None.** 404-AM has no backend. It does not use any data providers,
+**None.** Nocturne has no backend. It does not use any data providers,
 authentication services, payment processors, analytics, or AI services. All
 capture and processing happens **locally on the user's device**; nothing is
 transmitted off-device. (The "Copy for AI" feature only formats data onto the
@@ -77,13 +77,13 @@ content or functionality.
 
 ### 7. Regulated industry / protected third-party material
 
-Not applicable. 404-AM is a general-purpose developer utility. It does not
+Not applicable. Nocturne is a general-purpose developer utility. It does not
 operate in a regulated industry and includes no protected third-party material.
 
 ### Privacy
 
-404-AM collects no data: no analytics, no accounts, no remote servers. Privacy
-policy: [https://404am.thefndrs.com/privacy/](https://404am.thefndrs.com/privacy/)
+Nocturne collects no data: no analytics, no accounts, no remote servers. Privacy
+policy: [https://nocturne.thefndrs.com/privacy/](https://nocturne.thefndrs.com/privacy/)
 
 ---
 
@@ -92,7 +92,7 @@ policy: [https://404am.thefndrs.com/privacy/](https://404am.thefndrs.com/privacy
 > Hello, and thank you for the detailed feedback. We have addressed both items.
 >
 > **Guideline 5 – Legal (China / DST):**
-> 404-AM has no ChatGPT, OpenAI, or generative-AI functionality. It is an
+> Nocturne has no ChatGPT, OpenAI, or generative-AI functionality. It is an
 > offline network/console inspector for web developers; it has no backend and
 > makes no network calls to any AI service. Its only AI-adjacent feature, "Copy
 > for AI," simply formats the captured request data onto the system clipboard so
@@ -106,16 +106,16 @@ policy: [https://404am.thefndrs.com/privacy/](https://404am.thefndrs.com/privacy
 > AI functionality to deactivate.
 >
 > **Guideline 2.1 – Information Needed (how to verify the Safari extension):**
-> 404-AM is a Safari Web Extension (macOS). To verify functionality:
-> 1. Launch the 404-AM app and click "Quit and Open Safari Extensions
+> Nocturne is a Safari Web Extension (macOS). To verify functionality:
+> 1. Launch the Nocturne app and click "Quit and Open Safari Extensions
 >    Preferences…".
-> 2. In Safari → Settings → Extensions, enable **404-AM** and choose "Always
+> 2. In Safari → Settings → Extensions, enable **Nocturne** and choose "Always
 >    Allow on Every Website".
 > 3. In Safari, open a website that makes network requests. For a reliable test
 >    target with live fetch/XHR traffic, open
 >    **https://jsonplaceholder.typicode.com/** (its homepage runs live fetch
 >    requests), or any single-page app such as **https://github.com/**.
-> 4. Open the 404-AM overlay panel on the page. You will see captured requests
+> 4. Open the Nocturne overlay panel on the page. You will see captured requests
 >    (method, URL, status, timing). Click a request to view Preview / Headers /
 >    Body / Traces, try the filters (errors, slow, content-type), the JSON tree
 >    viewer, "Copy as cURL / fetch," and the "Copy for AI" debug brief.

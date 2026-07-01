@@ -6,7 +6,7 @@ import { resolve } from 'node:path'
 
 const root = process.cwd()
 const pkg = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'))
-const out = `404-am-firefox-v${pkg.version}.zip`
+const out = `nocturne-firefox-v${pkg.version}.zip`
 
 if (!existsSync(resolve(root, 'dist', 'manifest.json'))) {
   console.error('✖ dist/ not built. Run `npm run build` first.')
