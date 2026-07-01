@@ -9,7 +9,7 @@ import Cocoa
 import SafariServices
 import WebKit
 
-let extensionBundleIdentifier = "dev.thefndrs.Nocturne.Extension"
+let extensionBundleIdentifier = "dev.thefndrs.nocturne.Extension"
 
 class ViewController: NSViewController, WKNavigationDelegate, WKScriptMessageHandler {
 

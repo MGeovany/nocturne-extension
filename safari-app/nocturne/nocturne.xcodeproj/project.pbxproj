@@ -15,7 +15,7 @@
 		9699FD422FE597A400E7997A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9699FD412FE597A400E7997A /* ViewController.swift */; };
 		9699FD452FE597A400E7997A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9699FD432FE597A400E7997A /* Main.storyboard */; };
 		9699FD472FE597A500E7997A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9699FD462FE597A500E7997A /* Assets.xcassets */; };
-		9699FD4E2FE597A500E7997A /* nocturne Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9699FD4D2FE597A500E7997A /* nocturne Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9699FD4E2FE597A500E7997A /* Nocturne Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9699FD4D2FE597A500E7997A /* Nocturne Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9699FD532FE597A500E7997A /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9699FD522FE597A500E7997A /* SafariWebExtensionHandler.swift */; };
 		9699FD632FE597A500E7997A /* icons in Resources */ = {isa = PBXBuildFile; fileRef = 9699FD5F2FE597A500E7997A /* icons */; };
 		9699FD642FE597A500E7997A /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 9699FD602FE597A500E7997A /* manifest.json */; };
@@ -29,7 +29,7 @@
 			containerPortal = 9699FD2A2FE597A400E7997A /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 9699FD4C2FE597A500E7997A;
-			remoteInfo = "nocturne Extension";
+			remoteInfo = "Nocturne Extension";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -40,7 +40,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				9699FD4E2FE597A500E7997A /* nocturne Extension.appex in Embed Foundation Extensions */,
+				9699FD4E2FE597A500E7997A /* Nocturne Extension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -48,7 +48,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		9699FD322FE597A400E7997A /* nocturne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "nocturne.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9699FD322FE597A400E7997A /* Nocturne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nocturne.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9699FD352FE597A400E7997A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9699FD392FE597A400E7997A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/Main.html; sourceTree = "<group>"; };
 		9699FD3B2FE597A400E7997A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
@@ -58,7 +58,7 @@
 		9699FD442FE597A400E7997A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9699FD462FE597A500E7997A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9699FD482FE597A500E7997A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9699FD4D2FE597A500E7997A /* nocturne Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "nocturne Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9699FD4D2FE597A500E7997A /* Nocturne Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Nocturne Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9699FD522FE597A500E7997A /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
 		9699FD542FE597A500E7997A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9699FD5F2FE597A500E7997A /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = "../../../dist-safari/icons"; sourceTree = "<group>"; };
@@ -88,8 +88,8 @@
 		9699FD292FE597A400E7997A = {
 			isa = PBXGroup;
 			children = (
-				9699FD342FE597A400E7997A /* nocturne */,
-				9699FD512FE597A500E7997A /* nocturne Extension */,
+				9699FD342FE597A400E7997A /* Nocturne */,
+				9699FD512FE597A500E7997A /* Nocturne Extension */,
 				9699FD332FE597A400E7997A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -97,13 +97,13 @@
 		9699FD332FE597A400E7997A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9699FD322FE597A400E7997A /* nocturne.app */,
-				9699FD4D2FE597A500E7997A /* nocturne Extension.appex */,
+				9699FD322FE597A400E7997A /* Nocturne.app */,
+				9699FD4D2FE597A500E7997A /* Nocturne Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9699FD342FE597A400E7997A /* nocturne */ = {
+		9699FD342FE597A400E7997A /* Nocturne */ = {
 			isa = PBXGroup;
 			children = (
 				9699FD352FE597A400E7997A /* AppDelegate.swift */,
@@ -127,7 +127,7 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		9699FD512FE597A500E7997A /* nocturne Extension */ = {
+		9699FD512FE597A500E7997A /* Nocturne Extension */ = {
 			isa = PBXGroup;
 			children = (
 				9699FD5E2FE597A500E7997A /* Resources */,
@@ -152,9 +152,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9699FD312FE597A400E7997A /* nocturne */ = {
+		9699FD312FE597A400E7997A /* Nocturne */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9699FD5B2FE597A500E7997A /* Build configuration list for PBXNativeTarget "nocturne" */;
+			buildConfigurationList = 9699FD5B2FE597A500E7997A /* Build configuration list for PBXNativeTarget "Nocturne" */;
 			buildPhases = (
 				9699FD2E2FE597A400E7997A /* Sources */,
 				9699FD2F2FE597A400E7997A /* Frameworks */,
@@ -166,16 +166,16 @@
 			dependencies = (
 				9699FD502FE597A500E7997A /* PBXTargetDependency */,
 			);
-			name = "nocturne";
+			name = "Nocturne";
 			packageProductDependencies = (
 			);
-			productName = "nocturne";
-			productReference = 9699FD322FE597A400E7997A /* nocturne.app */;
+			productName = "Nocturne";
+			productReference = 9699FD322FE597A400E7997A /* Nocturne.app */;
 			productType = "com.apple.product-type.application";
 		};
-		9699FD4C2FE597A500E7997A /* nocturne Extension */ = {
+		9699FD4C2FE597A500E7997A /* Nocturne Extension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9699FD572FE597A500E7997A /* Build configuration list for PBXNativeTarget "nocturne Extension" */;
+			buildConfigurationList = 9699FD572FE597A500E7997A /* Build configuration list for PBXNativeTarget "Nocturne Extension" */;
 			buildPhases = (
 				9699FD492FE597A500E7997A /* Sources */,
 				9699FD4A2FE597A500E7997A /* Frameworks */,
@@ -185,11 +185,11 @@
 			);
 			dependencies = (
 			);
-			name = "nocturne Extension";
+			name = "Nocturne Extension";
 			packageProductDependencies = (
 			);
-			productName = "nocturne Extension";
-			productReference = 9699FD4D2FE597A500E7997A /* nocturne Extension.appex */;
+			productName = "Nocturne Extension";
+			productReference = 9699FD4D2FE597A500E7997A /* Nocturne Extension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -210,7 +210,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9699FD2D2FE597A400E7997A /* Build configuration list for PBXProject "nocturne" */;
+			buildConfigurationList = 9699FD2D2FE597A400E7997A /* Build configuration list for PBXProject "Nocturne" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -224,8 +224,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9699FD312FE597A400E7997A /* nocturne */,
-				9699FD4C2FE597A500E7997A /* nocturne Extension */,
+				9699FD312FE597A400E7997A /* Nocturne */,
+				9699FD4C2FE597A500E7997A /* Nocturne Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -280,7 +280,7 @@
 /* Begin PBXTargetDependency section */
 		9699FD502FE597A500E7997A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9699FD4C2FE597A500E7997A /* nocturne Extension */;
+			target = 9699FD4C2FE597A500E7997A /* Nocturne Extension */;
 			targetProxy = 9699FD4F2FE597A500E7997A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -582,7 +582,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9699FD2D2FE597A400E7997A /* Build configuration list for PBXProject "nocturne" */ = {
+		9699FD2D2FE597A400E7997A /* Build configuration list for PBXProject "Nocturne" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9699FD552FE597A500E7997A /* Debug */,
@@ -591,7 +591,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9699FD572FE597A500E7997A /* Build configuration list for PBXNativeTarget "nocturne Extension" */ = {
+		9699FD572FE597A500E7997A /* Build configuration list for PBXNativeTarget "Nocturne Extension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9699FD582FE597A500E7997A /* Debug */,
@@ -600,7 +600,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9699FD5B2FE597A500E7997A /* Build configuration list for PBXNativeTarget "nocturne" */ = {
+		9699FD5B2FE597A500E7997A /* Build configuration list for PBXNativeTarget "Nocturne" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9699FD5C2FE597A500E7997A /* Debug */,
