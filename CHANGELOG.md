@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to 404-AM are documented here. This project adheres to
+All notable changes to Nocturne are documented here. This project adheres to
 [Keep a Changelog](https://keepachangelog.com/) and
 [Semantic Versioning](https://semver.org/).
 
@@ -11,7 +11,7 @@ All notable changes to 404-AM are documented here. This project adheres to
 Initial release.
 
 ### Added
-- DevTools panel "404-AM" capturing fetch/XHR requests via
+- DevTools panel "Nocturne" capturing fetch/XHR requests via
   `chrome.devtools.network.onRequestFinished`.
 - Request list with method, status, duration, size, and content-type badge.
 - Filters: errors (4xx/5xx), slow requests, content-type, starred, URL search,

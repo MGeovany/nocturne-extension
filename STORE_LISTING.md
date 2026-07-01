@@ -1,6 +1,6 @@
-# Chrome Web Store listing — 404-AM
+# Chrome Web Store listing — Nocturne
 
-Copy/paste-ready text and a checklist for submitting 404-AM to the
+Copy/paste-ready text and a checklist for submitting Nocturne to the
 [Chrome Web Store Developer Console](https://chrome.google.com/webstore/devconsole).
 
 ---
@@ -8,7 +8,7 @@ Copy/paste-ready text and a checklist for submitting 404-AM to the
 ## Product name
 
 ```
-404-AM — Network & Console DevTools
+Nocturne — Network & Console DevTools
 ```
 
 ## Summary (short description, max 132 chars)
@@ -30,7 +30,7 @@ English
 ## Detailed description
 
 ```
-404-AM adds a "404-AM" tab to Chrome DevTools — a focused workspace for
+Nocturne adds a "Nocturne" tab to Chrome DevTools — a focused workspace for
 understanding what each network request in your web app actually did.
 
 FEATURES
@@ -55,7 +55,7 @@ FEATURES
 • Export to HAR or JSON.
 
 PRIVACY
-404-AM collects nothing. No analytics, no remote servers. All data stays in
+Nocturne collects nothing. No analytics, no remote servers. All data stays in
 your browser. It requests no host permissions, injects no content scripts, and
 runs no remote code. See the privacy policy for details.
 ```
@@ -68,7 +68,7 @@ Host `PRIVACY.md` (e.g. on GitHub) and paste its public URL here.
 
 ## Privacy practices form (Developer Console answers)
 
-- **Single purpose:** "404-AM adds a Chrome DevTools panel to inspect, filter,
+- **Single purpose:** "Nocturne adds a Chrome DevTools panel to inspect, filter,
   and debug the network requests and console output of the page being
   inspected."
 - **Permission justifications:**
@@ -102,9 +102,9 @@ running extension):
 ## Build & upload
 
 ```bash
-npm run package      # builds, then writes 404-am-v<version>.zip
+npm run package      # builds, then writes nocturne-v<version>.zip
 ```
 
-Upload the generated `404-am-v<version>.zip` in the Developer Console, fill in
+Upload the generated `nocturne-v<version>.zip` in the Developer Console, fill in
 the fields above, attach screenshots, and submit for review. Bump `version` in
 `package.json` and `public/manifest.json` for each new release.

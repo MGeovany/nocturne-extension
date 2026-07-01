@@ -12,9 +12,9 @@ export interface ConsoleEntry {
 // (and window error events) to push entries into a capped buffer we drain by
 // polling. Guarded so repeated installs don't double-wrap.
 const INSTALL_EXPR = `(function () {
-  if (window.__404AM_INSTALLED__) return 'already';
-  window.__404AM_INSTALLED__ = true;
-  window.__404AM_LOGS__ = window.__404AM_LOGS__ || [];
+  if (window.__nocturne_INSTALLED__) return 'already';
+  window.__nocturne_INSTALLED__ = true;
+  window.__nocturne_LOGS__ = window.__nocturne_LOGS__ || [];
   function fmt(a) {
     try {
       if (typeof a === 'string') return a;
@@ -28,8 +28,8 @@ const INSTALL_EXPR = `(function () {
     console[m] = function () {
       try {
         var args = Array.prototype.slice.call(arguments);
-        window.__404AM_LOGS__.push({ level: m, text: args.map(fmt).join(' '), time: Date.now() });
-        var q = window.__404AM_LOGS__;
+        window.__nocturne_LOGS__.push({ level: m, text: args.map(fmt).join(' '), time: Date.now() });
+        var q = window.__nocturne_LOGS__;
         if (q.length > 2000) q.splice(0, q.length - 2000);
       } catch (e) {}
       return orig.apply(console, arguments);
@@ -38,7 +38,7 @@ const INSTALL_EXPR = `(function () {
   window.addEventListener('error', function (e) {
     try {
       var loc = e.filename ? ' (' + e.filename + ':' + e.lineno + ')' : '';
-      window.__404AM_LOGS__.push({ level: 'error', text: (e.message || 'Error') + loc, time: Date.now() });
+      window.__nocturne_LOGS__.push({ level: 'error', text: (e.message || 'Error') + loc, time: Date.now() });
     } catch (_) {}
   });
   return 'installed';
@@ -47,7 +47,7 @@ const INSTALL_EXPR = `(function () {
 // Drains and returns whatever has accumulated since the last poll.
 const POLL_EXPR = `(function () {
   try {
-    var q = window.__404AM_LOGS__;
+    var q = window.__nocturne_LOGS__;
     if (!q || !q.length) return [];
     return q.splice(0, q.length);
   } catch (e) { return []; }

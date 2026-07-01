@@ -31,7 +31,7 @@ export function toJson(reqs: CapturedRequest[]): string {
     responseBodySize: r.responseBodySize,
   }))
   return JSON.stringify(
-    { exportedFrom: '404-AM', count: requests.length, requests },
+    { exportedFrom: 'Nocturne', count: requests.length, requests },
     null,
     2,
   )
@@ -104,7 +104,7 @@ export async function toHar(reqs: CapturedRequest[]): Promise<string> {
     {
       log: {
         version: '1.2',
-        creator: { name: '404-AM', version: '0.1.0' },
+        creator: { name: 'Nocturne', version: '0.1.0' },
         entries,
       },
     },

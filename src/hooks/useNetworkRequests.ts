@@ -5,6 +5,7 @@ import { ignoreExtensionContextInvalidated, isExtensionContextInvalidated } from
 const STORAGE_KEY = 'fourohfour_request_history_v1'
 const MAX_PERSISTED_REQUESTS = 500
 const MAX_PERSISTED_BODY_CHARS = 250_000
+const MAX_PERSISTED_TOTAL_BODY_CHARS = 2_000_000
 
 type ResponseContent = { content: string; encoding: string }
 type PersistedRequest = Omit<CapturedRequest, 'getContent'> & { responseContent?: ResponseContent }
@@ -32,8 +33,40 @@ function toPersistedRequest(request: CapturedRequest): PersistedRequest {
   return persistable
 }
 
+function persistedBodyChars(request: PersistedRequest): number {
+  return (request.requestBody?.text?.length ?? 0) + (request.responseContent?.content.length ?? 0)
+}
+
+function stripPersistedBodies(request: PersistedRequest): PersistedRequest {
+  const { responseContent: _ignored, ...withoutResponse } = request
+  return request.requestBody?.text
+    ? { ...withoutResponse, requestBody: { ...request.requestBody, text: undefined } }
+    : withoutResponse
+}
+
+function stripHistoryBodies(history: PersistedHistory): PersistedHistory {
+  return {
+    ...history,
+    requests: history.requests.map(stripPersistedBodies),
+  }
+}
+
+function isStorageQuotaError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error)
+  return message.toLowerCase().includes('quota')
+}
+
 function trimHistory(history: PersistedHistory): PersistedHistory {
   const requests = history.requests.slice(-MAX_PERSISTED_REQUESTS)
+  let bodyChars = 0
+  for (let i = requests.length - 1; i >= 0; i--) {
+    const requestBodyChars = persistedBodyChars(requests[i])
+    if (bodyChars + requestBodyChars <= MAX_PERSISTED_TOTAL_BODY_CHARS) {
+      bodyChars += requestBodyChars
+    } else {
+      requests[i] = stripPersistedBodies(requests[i])
+    }
+  }
   const oldestRequestId = requests[0]?.id ?? Infinity
   return {
     requests,
@@ -73,12 +106,25 @@ export function useNetworkRequests(preserveLog: boolean) {
       contextInvalidated = true
     }
 
-    const persistHistory = () => {
+    const persistHistory = (retryWithoutBodies = true) => {
       try {
         if (typeof chrome === 'undefined') return
         const history = trimHistory(persistedRef.current)
         persistedRef.current = history
-        chrome.storage?.local?.set({ [STORAGE_KEY]: history })
+        chrome.storage?.local?.set({ [STORAGE_KEY]: history }, () => {
+          const error = chrome.runtime?.lastError
+          if (!error) return
+          if (isExtensionContextInvalidated(error)) {
+            contextInvalidated = true
+            return
+          }
+          if (retryWithoutBodies && isStorageQuotaError(error)) {
+            persistedRef.current = stripHistoryBodies(history)
+            persistHistory(false)
+            return
+          }
+          console.warn('Failed to persist request history', error.message)
+        })
       } catch (error) {
         ignoreExtensionContextInvalidated(error)
       }

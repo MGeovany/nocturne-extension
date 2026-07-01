@@ -17,7 +17,7 @@ type Edge = 'left' | 'right' | 'top' | 'bottom'
 const s = document.createElement('script')
 s.src = chrome.runtime.getURL('inject.js')
 s.onload = () => {
-  console.log('[404-AM] injected capture script loaded')
+  console.log('[Nocturne] injected capture script loaded')
   s.remove()
 }
 ;(document.head || document.documentElement).appendChild(s)
@@ -26,8 +26,8 @@ s.onload = () => {
 window.addEventListener('message', (e) => {
   if (e.source !== window) return
   const d = e.data
-  if (!d || d.__source !== '404am') return
-  console.log('[404-AM] received message', d.kind)
+  if (!d || d.__source !== 'nocturne') return
+  console.log('[Nocturne] received message', d.kind)
   if (d.kind === 'request') store.addRequest(d.payload)
   else if (d.kind === 'log') store.addLog(d.payload)
   else if (d.kind === 'nav') store.addNavigation(d.payload?.url ?? '')
@@ -35,14 +35,14 @@ window.addEventListener('message', (e) => {
 
 // 3. Mount in Shadow DOM so panel styles cannot affect the inspected page.
 function mount() {
-  if (document.getElementById('__404am_host')) return
+  if (document.getElementById('__nocturne_host')) return
 
   let edge: Edge = 'right'
   let fabX = window.innerWidth - FAB_SIZE - 16
   let fabY = window.innerHeight - FAB_SIZE - 16
 
   const host = document.createElement('div')
-  host.id = '__404am_host'
+  host.id = '__nocturne_host'
   host.style.position = 'fixed'
   host.style.left = `${fabX}px`
   host.style.top = `${fabY}px`
@@ -63,8 +63,8 @@ function mount() {
   const button = document.createElement('button')
   button.className = 'overlay-fab'
   button.type = 'button'
-  button.title = '404-AM'
-  button.setAttribute('aria-label', 'Open 404-AM')
+  button.title = 'Nocturne'
+  button.setAttribute('aria-label', 'Open Nocturne')
   const buttonIcon = document.createElement('img')
   buttonIcon.src = chrome.runtime.getURL('icons/icon64.png')
   buttonIcon.alt = ''
@@ -215,7 +215,7 @@ function mount() {
     modeButton.textContent = expanded ? '↙' : '↗'
     modeButton.title = expanded ? 'Compact panel' : 'Expand panel'
     positionHost()
-    console.log('[404-AM] overlay open:', open)
+    console.log('[Nocturne] overlay open:', open)
   }
 
   const toggleOpen = () => {
@@ -296,7 +296,7 @@ function mount() {
 
   createRoot(panelEl).render(<Panel />)
   syncOpen()
-  console.log('[404-AM] overlay mounted')
+  console.log('[Nocturne] overlay mounted')
 }
 
 if (document.documentElement) mount()

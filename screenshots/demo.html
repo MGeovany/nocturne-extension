@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>404-AM demo target</title>
+    <title>Nocturne demo target</title>
     <style>
       :root {
         color-scheme: dark;
@@ -66,9 +66,9 @@
   </head>
   <body>
     <div class="card">
-      <h1>404-AM demo target</h1>
+      <h1>Nocturne demo target</h1>
       <p class="sub">
-        Open DevTools → <strong>404-AM</strong> tab, then run the traffic to
+        Open DevTools → <strong>Nocturne</strong> tab, then run the traffic to
         populate the panel for screenshots.
       </p>
       <div class="row">
@@ -97,7 +97,7 @@
         try {
           const res = await fetch(url, Object.assign({}, init, { headers }))
           console.info('[demo] ' + label + ' →', res.status)
-          // Drain the body so 404-AM can show it.
+          // Drain the body so Nocturne can show it.
           await res.text()
           return res.status
         } catch (e) {
@@ -120,7 +120,7 @@
               'Content-Type': 'application/json',
               Authorization: 'Bearer demo-token-abc123',
             },
-            body: JSON.stringify({ title: 'Hello', body: 'from 404-AM demo', userId: 7 }),
+            body: JSON.stringify({ title: 'Hello', body: 'from Nocturne demo', userId: 7 }),
           }),
         e404: () => call('GET missing', JP + '/nope/404', { headers: jsonAccept }),
         e500: () => call('GET 500', STAT + '/500', { headers: jsonAccept }),
@@ -133,7 +133,7 @@
           setTimeout(() => {
             throw new Error('[demo] uncaught error for the Console panel')
           }, 0)
-          note('Emitted console logs (see the 404-AM Console panel).')
+          note('Emitted console logs (see the Nocturne Console panel).')
         },
       }
 
@@ -149,7 +149,7 @@
         actions.logs()
         await Promise.all([actions.ok(), actions.list(), actions.post(), actions.e404(), actions.e500()])
         await actions.slow()
-        note('Done — switch to the 404-AM panel.')
+        note('Done — switch to the Nocturne panel.')
       }
     </script>
   </body>
