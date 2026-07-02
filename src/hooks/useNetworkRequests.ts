@@ -15,6 +15,25 @@ interface PersistedHistory {
   navigations: NavMarker[]
 }
 
+interface DevtoolsNetworkRequest {
+  _resourceType?: string | null
+  time: number
+  startedDateTime: string
+  request: {
+    method: string
+    url: string
+    headers: ReadonlyArray<{ name: string; value: string }>
+    postData?: { mimeType: string; text?: string }
+  }
+  response: {
+    status: number
+    statusText: string
+    headers: ReadonlyArray<{ name: string; value: string }>
+    content?: { mimeType?: string; size?: number }
+  }
+  getContent: (callback: (content: string | undefined, encoding: string | undefined) => void) => void
+}
+
 function toHeaders(list: ReadonlyArray<{ name: string; value: string }>): HarHeader[] {
   return list.map((h) => ({ name: h.name, value: h.value }))
 }
@@ -81,6 +100,11 @@ export interface NavMarker {
   url: string
 }
 
+function getDevtoolsNetwork() {
+  const api = globalThis.chrome
+  return api?.['devtools']?.network
+}
+
 /**
  * Subscribes to finished network requests for the inspected page and exposes
  * them as a growing list. When `preserveLog` is false, the list is cleared on
@@ -132,11 +156,12 @@ export function useNetworkRequests(preserveLog: boolean) {
 
     const startListening = () => {
       if (contextInvalidated) return
+      const network = getDevtoolsNetwork()
+      if (!network) return
 
-      const onFinished = (entry: chrome.devtools.network.Request) => {
+      const onFinished = (entry: DevtoolsNetworkRequest) => {
         if (contextInvalidated) return
-        const resourceType =
-          (entry as unknown as { _resourceType?: string })._resourceType ?? 'other'
+        const resourceType = entry._resourceType || 'other'
 
         const id = idRef.current++
         const getContent = () =>
@@ -207,11 +232,11 @@ export function useNetworkRequests(preserveLog: boolean) {
       }
 
       try {
-        chrome.devtools.network.onRequestFinished.addListener(onFinished)
-        chrome.devtools.network.onNavigated.addListener(onNavigated)
+        network.onRequestFinished.addListener(onFinished)
+        network.onNavigated.addListener(onNavigated)
         cleanupListeners = () => {
-          chrome.devtools.network.onRequestFinished.removeListener(onFinished)
-          chrome.devtools.network.onNavigated.removeListener(onNavigated)
+          network.onRequestFinished.removeListener(onFinished)
+          network.onNavigated.removeListener(onNavigated)
         }
       } catch (error) {
         stopIfContextInvalidated(error)

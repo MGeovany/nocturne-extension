@@ -11,10 +11,20 @@ export interface IndexedDbEntry {
   version?: number
 }
 
+export interface SiteCookie {
+  name: string
+  value: string
+  domain: string
+  path: string
+  storeId: string
+  httpOnly: boolean
+  secure: boolean
+}
+
 export interface SiteDataSnapshot {
   href: string
   origin: string
-  cookies: chrome.cookies.Cookie[]
+  cookies: SiteCookie[]
   localStorage: StorageEntry[]
   sessionStorage: StorageEntry[]
   indexedDB: IndexedDbEntry[]
@@ -32,10 +42,40 @@ interface PageData {
   serviceWorkers: string[]
 }
 
+interface EvaluationExceptionInfo {
+  isException?: boolean
+  value?: string
+  description?: string
+}
+
+type DevtoolsEval = (expression: string, callback: (result: unknown, exceptionInfo?: EvaluationExceptionInfo) => void) => void
+
+function getDevtoolsEval(): DevtoolsEval | undefined {
+  const api = globalThis.chrome
+  if (!api) return undefined
+  const devtools = api['devtools']
+  if (!devtools) return undefined
+  const inspectedWindow = devtools['inspectedWindow']
+  return inspectedWindow?.eval
+}
+
+function hasDevtoolsEval(): boolean {
+  return !!getDevtoolsEval()
+}
+
 function evalInInspectedPage<T>(expression: string): Promise<T> {
   return new Promise((resolve, reject) => {
     try {
-      chrome.devtools.inspectedWindow.eval(expression, (result, exceptionInfo) => {
+      if (!hasDevtoolsEval()) {
+        reject(new Error('DevTools page evaluation is not available'))
+        return
+      }
+      const devtoolsEval = getDevtoolsEval()
+      if (!devtoolsEval) {
+        reject(new Error('DevTools page evaluation is not available'))
+        return
+      }
+      devtoolsEval(expression, (result, exceptionInfo) => {
         const lastError = chrome.runtime?.lastError
         if (lastError) {
           reject(new Error(lastError.message))
@@ -87,17 +127,61 @@ async function evalAsyncInInspectedPage<T>(body: string): Promise<T> {
   return result.value as T
 }
 
-function cookieUrl(cookie: chrome.cookies.Cookie): string {
+function storageEntries(storage: Storage): StorageEntry[] {
+  try {
+    return Object.keys(storage).map((key) => ({ key, value: storage.getItem(key) || '' }))
+  } catch (_err) {
+    return []
+  }
+}
+
+function cookieUrl(cookie: SiteCookie): string {
   const protocol = cookie.secure ? 'https:' : 'http:'
   const host = cookie.domain.replace(/^\./, '')
   return `${protocol}//${host}${cookie.path || '/'}`
 }
 
-function getCookies(url: string): Promise<chrome.cookies.Cookie[]> {
+function decodeCookiePart(value: string): string {
+  try {
+    return decodeURIComponent(value)
+  } catch (_err) {
+    return value
+  }
+}
+
+function documentCookies(): SiteCookie[] {
+  if (typeof document === 'undefined' || !document.cookie) return []
+  return document.cookie
+    .split(';')
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) => {
+      const eq = part.indexOf('=')
+      const rawName = eq === -1 ? part : part.slice(0, eq)
+      const rawValue = eq === -1 ? '' : part.slice(eq + 1)
+      return {
+        name: decodeCookiePart(rawName),
+        value: decodeCookiePart(rawValue),
+        domain: location.hostname,
+        path: '/',
+        storeId: 'document',
+        httpOnly: false,
+        secure: location.protocol === 'https:',
+      }
+    })
+}
+
+function expireDocumentCookie(name: string, path = '/') {
+  const encodedName = encodeURIComponent(name)
+  document.cookie = `${encodedName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; max-age=0; path=${path}`
+  document.cookie = `${encodedName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; max-age=0; path=/`
+}
+
+function getCookies(url: string): Promise<SiteCookie[]> {
   return new Promise((resolve, reject) => {
     try {
-      if (!chrome.cookies?.getAll) {
-        resolve([])
+      if (typeof chrome === 'undefined' || !chrome.cookies?.getAll) {
+        resolve(documentCookies())
         return
       }
       chrome.cookies.getAll({ url }, (cookies) => {
@@ -111,9 +195,14 @@ function getCookies(url: string): Promise<chrome.cookies.Cookie[]> {
   })
 }
 
-function removeCookie(cookie: chrome.cookies.Cookie): Promise<void> {
+function removeCookie(cookie: SiteCookie): Promise<void> {
   return new Promise((resolve, reject) => {
     try {
+      if (typeof chrome === 'undefined' || !chrome.cookies?.remove) {
+        expireDocumentCookie(cookie.name, cookie.path)
+        resolve()
+        return
+      }
       chrome.cookies.remove(
         { url: cookieUrl(cookie), name: cookie.name, storeId: cookie.storeId },
         () => {
@@ -131,7 +220,8 @@ function removeCookie(cookie: chrome.cookies.Cookie): Promise<void> {
 function clearBrowsingData(origin: string): Promise<void> {
   return new Promise((resolve, reject) => {
     try {
-      if (!chrome.browsingData?.remove) {
+      if (typeof chrome === 'undefined' || !chrome.browsingData?.remove) {
+        documentCookies().forEach((cookie) => expireDocumentCookie(cookie.name, cookie.path))
         resolve()
         return
       }
@@ -157,7 +247,54 @@ function clearBrowsingData(origin: string): Promise<void> {
   })
 }
 
+async function deleteIndexedDbLocal(name: string): Promise<void> {
+  await new Promise<void>((resolve, reject) => {
+    const request = indexedDB.deleteDatabase(name)
+    request.onsuccess = () => resolve()
+    request.onerror = () => reject(request.error || new Error('Failed to delete database'))
+    request.onblocked = () => resolve()
+  })
+}
+
+async function readLocalPageData(): Promise<PageData> {
+  const dbs: IndexedDbEntry[] = []
+  try {
+    if (indexedDB?.databases) {
+      const databases = await indexedDB.databases()
+      dbs.push(
+        ...databases
+          .map((db) => ({ name: db.name || '', version: db.version }))
+          .filter((db) => !!db.name),
+      )
+    }
+  } catch (_err) {}
+
+  let cacheNames: string[] = []
+  try {
+    if (typeof caches !== 'undefined') cacheNames = await caches.keys()
+  } catch (_err) {}
+
+  let serviceWorkers: string[] = []
+  try {
+    if (navigator.serviceWorker) {
+      serviceWorkers = (await navigator.serviceWorker.getRegistrations()).map((registration) => registration.scope)
+    }
+  } catch (_err) {}
+
+  return {
+    href: location.href,
+    origin: location.origin,
+    localStorage: storageEntries(localStorage),
+    sessionStorage: storageEntries(sessionStorage),
+    indexedDB: dbs,
+    cacheStorage: cacheNames,
+    serviceWorkers,
+  }
+}
+
 async function readPageData(): Promise<PageData> {
+  if (!hasDevtoolsEval()) return readLocalPageData()
+
   return evalAsyncInInspectedPage<PageData>(`
     function storageEntries(storage) {
       try {
@@ -241,53 +378,117 @@ export function useSiteData() {
     await refresh()
   }, [refresh, run])
 
-  const deleteCookie = useCallback((cookie: chrome.cookies.Cookie) => mutate(() => removeCookie(cookie)), [mutate])
+  const deleteCookie = useCallback((cookie: SiteCookie) => mutate(() => removeCookie(cookie)), [mutate])
 
   const deleteStorageItem = useCallback(
     (kind: 'localStorage' | 'sessionStorage', key: string) =>
-      mutate(() => evalInInspectedPage<void>(`${kind}.removeItem(${JSON.stringify(key)})`)),
+      mutate(() => {
+        if (!hasDevtoolsEval()) {
+          ;(kind === 'localStorage' ? localStorage : sessionStorage).removeItem(key)
+          return Promise.resolve()
+        }
+        return evalInInspectedPage<void>(`${kind}.removeItem(${JSON.stringify(key)})`)
+      }),
     [mutate],
   )
 
   const clearStorage = useCallback(
-    (kind: 'localStorage' | 'sessionStorage') => mutate(() => evalInInspectedPage<void>(`${kind}.clear()`)),
+    (kind: 'localStorage' | 'sessionStorage') =>
+      mutate(() => {
+        if (!hasDevtoolsEval()) {
+          ;(kind === 'localStorage' ? localStorage : sessionStorage).clear()
+          return Promise.resolve()
+        }
+        return evalInInspectedPage<void>(`${kind}.clear()`)
+      }),
     [mutate],
   )
 
   const deleteIndexedDB = useCallback(
-    (name: string) => mutate(() => evalAsyncInInspectedPage<void>(`
-      await new Promise(function (resolve, reject) {
-        var request = indexedDB.deleteDatabase(${JSON.stringify(name)});
-        request.onsuccess = function () { resolve(); };
-        request.onerror = function () { reject(request.error || new Error('Failed to delete database')); };
-        request.onblocked = function () { resolve(); };
-      });
-    `)),
+    (name: string) =>
+      mutate(() => {
+        if (!hasDevtoolsEval()) return deleteIndexedDbLocal(name)
+        return evalAsyncInInspectedPage<void>(`
+          await new Promise(function (resolve, reject) {
+            var request = indexedDB.deleteDatabase(${JSON.stringify(name)});
+            request.onsuccess = function () { resolve(); };
+            request.onerror = function () { reject(request.error || new Error('Failed to delete database')); };
+            request.onblocked = function () { resolve(); };
+          });
+        `)
+      }),
     [mutate],
   )
 
   const deleteCache = useCallback(
-    (name: string) => mutate(() => evalAsyncInInspectedPage<void>(`
-      if (typeof caches !== 'undefined') await caches.delete(${JSON.stringify(name)});
-    `)),
+    (name: string) =>
+      mutate(async () => {
+        if (!hasDevtoolsEval()) {
+          if (typeof caches !== 'undefined') await caches.delete(name)
+          return
+        }
+        await evalAsyncInInspectedPage<void>(`
+          if (typeof caches !== 'undefined') await caches.delete(${JSON.stringify(name)});
+        `)
+      }),
     [mutate],
   )
 
   const unregisterServiceWorker = useCallback(
-    (scope: string) => mutate(() => evalAsyncInInspectedPage<void>(`
-      if (navigator.serviceWorker) {
-        var registrations = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(registrations.filter(function (registration) {
-          return registration.scope === ${JSON.stringify(scope)};
-        }).map(function (registration) { return registration.unregister(); }));
-      }
-    `)),
+    (scope: string) =>
+      mutate(async () => {
+        if (!hasDevtoolsEval()) {
+          if (navigator.serviceWorker) {
+            const registrations = await navigator.serviceWorker.getRegistrations()
+            await Promise.all(
+              registrations
+                .filter((registration) => registration.scope === scope)
+                .map((registration) => registration.unregister()),
+            )
+          }
+          return
+        }
+        await evalAsyncInInspectedPage<void>(`
+          if (navigator.serviceWorker) {
+            var registrations = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(registrations.filter(function (registration) {
+              return registration.scope === ${JSON.stringify(scope)};
+            }).map(function (registration) { return registration.unregister(); }));
+          }
+        `)
+      }),
     [mutate],
   )
 
   const clearAll = useCallback(async () => {
     if (!data) return
     await mutate(async () => {
+      if (!hasDevtoolsEval()) {
+        try { localStorage.clear() } catch (_err) {}
+        try { sessionStorage.clear() } catch (_err) {}
+        try {
+          if (typeof caches !== 'undefined') {
+            await Promise.all((await caches.keys()).map((key) => caches.delete(key)))
+          }
+        } catch (_err) {}
+        try {
+          if (indexedDB?.databases) {
+            await Promise.all(
+              (await indexedDB.databases())
+                .filter((db) => !!db.name)
+                .map((db) => deleteIndexedDbLocal(db.name || '')),
+            )
+          }
+        } catch (_err) {}
+        try {
+          if (navigator.serviceWorker) {
+            await Promise.all((await navigator.serviceWorker.getRegistrations()).map((registration) => registration.unregister()))
+          }
+        } catch (_err) {}
+        await clearBrowsingData(data.origin)
+        return
+      }
+
       await evalAsyncInInspectedPage<void>(`
         try { localStorage.clear(); } catch (_) {}
         try { sessionStorage.clear(); } catch (_) {}

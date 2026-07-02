@@ -59,6 +59,19 @@ interface RawEntry {
   time: number
 }
 
+function getDevtoolsEval() {
+  const api = globalThis.chrome
+  if (!api) return undefined
+  const devtools = api['devtools']
+  if (!devtools) return undefined
+  return devtools['inspectedWindow']?.eval
+}
+
+function getDevtoolsNetwork() {
+  const api = globalThis.chrome
+  return api?.['devtools']?.network
+}
+
 /**
  * Captures console output from the inspected page by polling a page-side
  * buffer. Re-installs the hook after navigations (the page reloads and the
@@ -81,7 +94,12 @@ export function useConsoleLogs(preserveLog: boolean) {
     }
     const install = () => {
       try {
-        chrome.devtools.inspectedWindow.eval(INSTALL_EXPR, () => {})
+        const devtoolsEval = getDevtoolsEval()
+        if (!devtoolsEval) {
+          stopped = true
+          return
+        }
+        devtoolsEval(INSTALL_EXPR, () => {})
       } catch (error) {
         stopIfContextInvalidated(error)
       }
@@ -92,7 +110,12 @@ export function useConsoleLogs(preserveLog: boolean) {
     const poll = () => {
       if (stopped) return
       try {
-        chrome.devtools.inspectedWindow.eval(POLL_EXPR, (result, err) => {
+        const devtoolsEval = getDevtoolsEval()
+        if (!devtoolsEval) {
+          stopped = true
+          return
+        }
+        devtoolsEval(POLL_EXPR, (result, err) => {
           if (stopped || err) return
           const batch = result as RawEntry[] | undefined
           if (!Array.isArray(batch) || batch.length === 0) return
@@ -120,7 +143,8 @@ export function useConsoleLogs(preserveLog: boolean) {
       if (!preserveRef.current) setLogs([])
     }
     try {
-      chrome.devtools.network.onNavigated.addListener(onNavigated)
+      const network = getDevtoolsNetwork()
+      if (network) network.onNavigated.addListener(onNavigated)
     } catch (error) {
       stopIfContextInvalidated(error)
     }
@@ -129,7 +153,8 @@ export function useConsoleLogs(preserveLog: boolean) {
       stopped = true
       clearInterval(interval)
       try {
-        chrome.devtools.network.onNavigated.removeListener(onNavigated)
+        const network = getDevtoolsNetwork()
+        if (network) network.onNavigated.removeListener(onNavigated)
       } catch (error) {
         if (!isExtensionContextInvalidated(error)) throw error
       }
