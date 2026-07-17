@@ -97,12 +97,32 @@ class ViewController: NSViewController, WKNavigationDelegate, WKScriptMessageHan
 
         guard alert.runModal() == .alertFirstButtonReturn else { return }
 
-        guard let safariURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.Safari") else { return }
-        NSWorkspace.shared.openApplication(at: safariURL, configuration: NSWorkspace.OpenConfiguration()) { _, _ in
+        guard let safariURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.Safari") else {
+            presentSafariLaunchFailure()
+            return
+        }
+        NSWorkspace.shared.openApplication(at: safariURL, configuration: NSWorkspace.OpenConfiguration()) { [weak self] application, error in
             DispatchQueue.main.async {
-                NSApplication.shared.terminate(nil)
+                if application != nil, error == nil {
+                    NSApplication.shared.terminate(nil)
+                } else {
+                    self?.presentSafariLaunchFailure()
+                }
             }
         }
+    }
+
+    private func presentSafariLaunchFailure() {
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = "Safari Could Not Be Opened"
+        if #available(macOS 13, *) {
+            alert.informativeText = "Please open Safari manually, then choose Safari > Settings > Extensions and turn on Nocturne."
+        } else {
+            alert.informativeText = "Please open Safari manually, then choose Safari > Preferences > Extensions and turn on Nocturne."
+        }
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
     }
 
 }
