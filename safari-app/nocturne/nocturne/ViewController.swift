@@ -43,15 +43,86 @@ class ViewController: NSViewController, WKNavigationDelegate, WKScriptMessageHan
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if (message.body as! String != "open-preferences") {
-            return;
+        guard (message.body as? String) == "open-preferences" else {
+            return
+        }
+
+        openSafariExtensionPreferences()
+    }
+
+    private var isOpeningPreferences = false
+
+    private func openSafariExtensionPreferences() {
+        guard !isOpeningPreferences else { return }
+        isOpeningPreferences = true
+
+        var finished = false
+        let finishOnce: (Error?) -> Void = { [weak self] error in
+            guard !finished else { return }
+            finished = true
+
+            if error == nil {
+                NSApplication.shared.terminate(nil)
+            } else {
+                self?.presentPreferencesFallback()
+            }
         }
 
         SFSafariApplication.showPreferencesForExtension(withIdentifier: extensionBundleIdentifier) { error in
             DispatchQueue.main.async {
-                NSApplication.shared.terminate(nil)
+                finishOnce(error)
             }
         }
+
+        // On some systems the completion handler above is never invoked,
+        // which would leave the button doing nothing. Fall back after a
+        // short grace period so the user always gets a response.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            finishOnce(NSError(domain: "dev.thefndrs.nocturne", code: -1))
+        }
+    }
+
+    private func presentPreferencesFallback() {
+        isOpeningPreferences = false
+
+        let alert = NSAlert()
+        alert.messageText = "Safari Settings Could Not Be Opened Automatically"
+        if #available(macOS 13, *) {
+            alert.informativeText = "Open Safari, choose Safari > Settings > Extensions, then turn on Nocturne."
+        } else {
+            alert.informativeText = "Open Safari, choose Safari > Preferences > Extensions, then turn on Nocturne."
+        }
+        alert.addButton(withTitle: "Open Safari")
+        alert.addButton(withTitle: "Cancel")
+
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+
+        guard let safariURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.Safari") else {
+            presentSafariLaunchFailure()
+            return
+        }
+        NSWorkspace.shared.openApplication(at: safariURL, configuration: NSWorkspace.OpenConfiguration()) { [weak self] application, error in
+            DispatchQueue.main.async {
+                if application != nil, error == nil {
+                    NSApplication.shared.terminate(nil)
+                } else {
+                    self?.presentSafariLaunchFailure()
+                }
+            }
+        }
+    }
+
+    private func presentSafariLaunchFailure() {
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = "Safari Could Not Be Opened"
+        if #available(macOS 13, *) {
+            alert.informativeText = "Please open Safari manually, then choose Safari > Settings > Extensions and turn on Nocturne."
+        } else {
+            alert.informativeText = "Please open Safari manually, then choose Safari > Preferences > Extensions and turn on Nocturne."
+        }
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
     }
 
 }
